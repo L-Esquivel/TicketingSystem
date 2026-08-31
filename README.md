@@ -13,9 +13,10 @@ A modern, enterprise-grade multi-tenant IT incident management and ticketing pla
 
 ## 🌟 Key Capabilities
 
-### 1. 🏢 Multi-Tenant Brokerage Isolation
-- Register, manage, and isolate technical support operations across multiple independent real estate businesses.
-- Switch between **Global Super Admin View** (all businesses combined) or **Single Company Isolated View**.
+### 1. 🏢 Multi-Tenant Brokerage Isolation & Staff Access Model
+- **Data Partitioning**: Every incident ticket is logically partitioned by `companyId` at the database and query level.
+- **Staff Access Scope**: All authenticated admin roles (Super Admin, Executive Director, IT Technician) currently have full visibility and edit access across ALL companies in the deployment — role differences control feature-level permissions (e.g., user management), not per-company data scope. This model fits a single centralized IT team serving multiple businesses. Restricting individual admins to specific companies would require additional per-user company assignment, which is not yet implemented.
+- Switch between **Global View** (all businesses combined) or **Single Company Filtered View**.
 
 ### 2. 🔢 Atomic Incident Numbering with Custom Prefixes
 - Every real estate company configures its own custom ticket ID prefix (e.g., `APEX`, `SUNSET`, `METRO`, `REALTY`).
