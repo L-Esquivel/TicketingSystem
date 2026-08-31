@@ -26,7 +26,7 @@ export async function middleware(request: NextRequest) {
 
   if (!token) {
     if (pathname.startsWith('/api/')) {
-      return NextResponse.json({ success: false, error: 'No autorizado' }, { status: 401 });
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', pathname);

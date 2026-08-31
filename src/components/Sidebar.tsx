@@ -10,7 +10,7 @@ import {
   PlusCircle,
   ShieldCheck,
   LogOut,
-  UserCheck,
+  Users,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -64,6 +64,12 @@ export function Sidebar({ onOpenCreateTicket }: SidebarProps) {
       href: '/companies',
       icon: Building2,
       active: pathname === '/companies',
+    },
+    {
+      name: 'Users & Access',
+      href: '/users',
+      icon: Users,
+      active: pathname === '/users',
     },
     {
       name: 'Client Submit Portal',
@@ -152,7 +158,11 @@ export function Sidebar({ onOpenCreateTicket }: SidebarProps) {
               {currentUser?.name || 'Luis Esquivel'}
             </p>
             <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
-              {currentUser?.role === 'SUPER_ADMIN' ? 'Super Admin IT Lead' : 'Executive Director'}
+              {currentUser?.role === 'SUPER_ADMIN'
+                ? 'Super Admin'
+                : currentUser?.role === 'EXECUTIVE'
+                ? 'Executive Director'
+                : 'IT Technician'}
             </p>
           </div>
         </div>
