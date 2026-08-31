@@ -1,0 +1,65 @@
+// Prisma Schema for Multi-Tenant IT Ticketing System (Real Estate)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id            String    @id @default(cuid())
+  name          String
+  prefix        String    @unique
+  ticketCounter Int       @default(0)
+  contactName   String?
+  contactEmail  String?
+  contactPhone  String?
+  address       String?
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  tickets       Ticket[]
+
+  @@index([prefix])
+}
+
+model Ticket {
+  id              String          @id @default(cuid())
+  ticketNumber    String          @unique
+  companyId       String
+  company         Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  requesterName   String
+  requesterEmail  String
+  category        String          @default("GENERAL")
+  title           String
+  description     String
+  priority        String          @default("MEDIUM")
+  status          String          @default("OPEN")
+  assignedTo      String?         @default("IT Support")
+  resolutionNotes String?
+  internalNotes   String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  resolvedAt      DateTime?
+  history         TicketHistory[]
+
+  @@index([companyId])
+  @@index([status])
+  @@index([priority])
+  @@index([ticketNumber])
+}
+
+model TicketHistory {
+  id        String   @id @default(cuid())
+  ticketId  String
+  ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  action    String
+  actor     String   @default("System")
+  details   String
+  createdAt DateTime @default(now())
+
+  @@index([ticketId])
+}
