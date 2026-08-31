@@ -237,7 +237,7 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
               </label>
               <textarea
                 rows={2}
-                placeholder="e.g. 45 agents, uses Okta SSO with CRMLS and Outlook 365"
+                placeholder="e.g. 45 agents, uses Okta SSO with CRMLS and Google Workspace"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 className="w-full px-3.5 py-2 text-sm rounded-lg bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 focus:outline-none resize-none"

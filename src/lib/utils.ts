@@ -24,7 +24,7 @@ export const CATEGORY_LABELS: Record<string, { label: string; icon: string }> = 
   SOFTWARE: { label: 'Software & Applications', icon: 'AppWindow' },
   NETWORK: { label: 'Network & Internet Connectivity', icon: 'Wifi' },
   ACCESS: { label: 'Access & Passwords / SSO', icon: 'Key' },
-  EMAIL: { label: 'Email & Microsoft 365 / Outlook', icon: 'Mail' },
+  EMAIL: { label: 'Email & Google Workspace / Gmail', icon: 'Mail' },
   MLS_REALTY: { label: 'MLS / Real Estate Platforms', icon: 'Building2' },
   PRINTER_PERIPHERALS: { label: 'Printers & Peripherals', icon: 'Printer' },
   SECURITY: { label: 'Security & Phishing', icon: 'ShieldAlert' },
