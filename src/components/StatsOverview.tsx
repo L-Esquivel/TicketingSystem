@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { TicketStats } from '@/types';
+import { TicketStats } from '../types';
 import {
   Ticket,
   Clock,

@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Sidebar } from '@/components/Sidebar';
-import { Navbar } from '@/components/Navbar';
-import { StatsOverview } from '@/components/StatsOverview';
-import { TicketTable } from '@/components/TicketTable';
-import { CreateTicketModal } from '@/components/CreateTicketModal';
-import { CreateCompanyModal } from '@/components/CreateCompanyModal';
-import { TicketDetailModal } from '@/components/TicketDetailModal';
-import { Ticket, TicketStats, Status } from '@/types';
+import { Sidebar } from '../components/Sidebar';
+import { Navbar } from '../components/Navbar';
+import { StatsOverview } from '../components/StatsOverview';
+import { TicketTable } from '../components/TicketTable';
+import { CreateTicketModal } from '../components/CreateTicketModal';
+import { CreateCompanyModal } from '../components/CreateCompanyModal';
+import { TicketDetailModal } from '../components/TicketDetailModal';
+import { Ticket, TicketStats, Status } from '../types';
 import {
   Building2,
   PlusCircle,
@@ -21,7 +21,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import Link from 'next/link';
-import { formatTimeAgo } from '@/lib/utils';
+import { formatTimeAgo } from '../lib/utils';
 import { toast } from 'sonner';
 
 export default function DashboardPage() {
@@ -140,14 +140,14 @@ export default function DashboardPage() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setIsCreateCompanyOpen(true)}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold shadow-sm transition-all"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold shadow-sm transition-all cursor-pointer"
               >
                 <Building2 className="w-4 h-4 text-blue-400" />
                 Nueva Empresa
               </button>
               <button
                 onClick={() => setIsCreateTicketOpen(true)}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-md shadow-blue-500/20 transition-all"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-md shadow-blue-500/20 transition-all cursor-pointer"
               >
                 <PlusCircle className="w-4 h-4" />
                 Registrar Incidencia

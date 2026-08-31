@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import prisma from '../../../../lib/prisma';
 
 interface Params {
   params: {
     id: string;
   };
 }
+
+export const dynamic = 'force-dynamic';
 
 // GET /api/tickets/[id] - Fetch single ticket with complete history
 export async function GET(request: Request, { params }: Params) {

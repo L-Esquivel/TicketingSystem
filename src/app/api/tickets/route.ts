@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
-import { createTicket } from '@/lib/tickets';
+import prisma from '../../../lib/prisma';
+import { createTicket } from '../../../lib/tickets';
 
 export const dynamic = 'force-dynamic';
 

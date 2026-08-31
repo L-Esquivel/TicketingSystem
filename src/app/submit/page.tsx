@@ -14,8 +14,8 @@ import {
   LifeBuoy,
   PlusCircle,
 } from 'lucide-react';
-import { Company, Priority, Category } from '@/types';
-import { CATEGORY_LABELS } from '@/lib/utils';
+import { Company, Priority, Category } from '../../types';
+import { CATEGORY_LABELS } from '../../lib/utils';
 import Link from 'next/link';
 import { toast } from 'sonner';
 

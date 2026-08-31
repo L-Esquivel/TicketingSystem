@@ -1,6 +1,6 @@
 import React from 'react';
-import { Priority } from '@/types';
-import { PRIORITY_CONFIG } from '@/lib/utils';
+import { Priority } from '../types';
+import { PRIORITY_CONFIG } from '../lib/utils';
 import { AlertCircle, AlertTriangle, ArrowDown, Flame } from 'lucide-react';
 
 interface PriorityBadgeProps {

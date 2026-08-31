@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Ticket, Status, Priority } from '@/types';
+import { Ticket, Status, Priority } from '../types';
 import { PriorityBadge } from './PriorityBadge';
 import { StatusBadge } from './StatusBadge';
-import { formatTimeAgo, CATEGORY_LABELS } from '@/lib/utils';
+import { formatTimeAgo, CATEGORY_LABELS } from '../lib/utils';
 import {
   Download,
   Filter,
@@ -131,7 +131,7 @@ export function TicketTable({
               <button
                 key={tab.id}
                 onClick={() => onTabChange?.(tab.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer ${
                   isActive
                     ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/20'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800'
@@ -171,7 +171,7 @@ export function TicketTable({
 
           <button
             onClick={exportCSV}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-300 text-xs font-medium transition-colors shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-300 text-xs font-medium transition-colors shadow-sm cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Exportar CSV</span>
@@ -303,7 +303,7 @@ export function TicketTable({
                         e.stopPropagation();
                         onSelectTicket(ticket);
                       }}
-                      className="p-1.5 rounded-lg text-slate-400 group-hover:text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
+                      className="p-1.5 rounded-lg text-slate-400 group-hover:text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors cursor-pointer"
                       title="Ver detalle completo"
                     >
                       <Eye className="w-4 h-4" />

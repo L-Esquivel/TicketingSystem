@@ -1,6 +1,6 @@
 import React from 'react';
-import { Status } from '@/types';
-import { STATUS_CONFIG } from '@/lib/utils';
+import { Status } from '../types';
+import { STATUS_CONFIG } from '../lib/utils';
 import { Clock, PlayCircle, PauseCircle, CheckCircle2, Archive } from 'lucide-react';
 
 interface StatusBadgeProps {

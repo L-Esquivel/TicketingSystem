@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Sidebar } from '@/components/Sidebar';
-import { Navbar } from '@/components/Navbar';
-import { TicketTable } from '@/components/TicketTable';
-import { CreateTicketModal } from '@/components/CreateTicketModal';
-import { TicketDetailModal } from '@/components/TicketDetailModal';
-import { Ticket, Status } from '@/types';
+import { Sidebar } from '../../components/Sidebar';
+import { Navbar } from '../../components/Navbar';
+import { TicketTable } from '../../components/TicketTable';
+import { CreateTicketModal } from '../../components/CreateTicketModal';
+import { TicketDetailModal } from '../../components/TicketDetailModal';
+import { Ticket, Status } from '../../types';
 import { PlusCircle, Ticket as TicketIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -91,7 +91,7 @@ export default function TicketsPage() {
 
             <button
               onClick={() => setIsCreateTicketOpen(true)}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm font-semibold shadow-md shadow-blue-500/20 transition-all"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm font-semibold shadow-md shadow-blue-500/20 transition-all cursor-pointer"
             >
               <PlusCircle className="w-4 h-4" />
               Nueva Incidencia

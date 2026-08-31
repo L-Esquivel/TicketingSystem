@@ -1,5 +1,5 @@
 import prisma from './prisma';
-import { Priority, Status, Category } from '@/types';
+import { Priority, Status, Category } from '../types';
 
 export interface CreateTicketDTO {
   companyId: string;

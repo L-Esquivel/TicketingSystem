@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Sidebar } from '@/components/Sidebar';
-import { Navbar } from '@/components/Navbar';
-import { CreateCompanyModal } from '@/components/CreateCompanyModal';
-import { EditCompanyModal } from '@/components/EditCompanyModal';
-import { CreateTicketModal } from '@/components/CreateTicketModal';
-import { Company } from '@/types';
+import { Sidebar } from '../../components/Sidebar';
+import { Navbar } from '../../components/Navbar';
+import { CreateCompanyModal } from '../../components/CreateCompanyModal';
+import { EditCompanyModal } from '../../components/EditCompanyModal';
+import { CreateTicketModal } from '../../components/CreateTicketModal';
+import { Company } from '../../types';
 import {
   Building2,
   PlusCircle,

@@ -17,10 +17,10 @@ import {
   Save,
   Trash2,
 } from 'lucide-react';
-import { Ticket, Status, Priority } from '@/types';
+import { Ticket, Status, Priority } from '../types';
 import { PriorityBadge } from './PriorityBadge';
 import { StatusBadge } from './StatusBadge';
-import { formatDate, formatTimeAgo, CATEGORY_LABELS } from '@/lib/utils';
+import { formatDate, formatTimeAgo, CATEGORY_LABELS } from '../lib/utils';
 import { toast } from 'sonner';
 
 interface TicketDetailModalProps {
@@ -150,13 +150,13 @@ export function TicketDetailModal({
             <button
               onClick={handleDelete}
               title="Eliminar incidencia"
-              className="p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors"
+              className="p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors cursor-pointer"
             >
               <Trash2 className="w-4 h-4" />
             </button>
             <button
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -349,7 +349,7 @@ export function TicketDetailModal({
                 <button
                   onClick={handleSave}
                   disabled={saving}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium text-sm shadow-md shadow-blue-500/20 transition-all disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium text-sm shadow-md shadow-blue-500/20 transition-all disabled:opacity-50 cursor-pointer"
                 >
                   {saving ? (
                     <span>Guardando cambios...</span>

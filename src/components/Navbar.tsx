@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Building2, Search, Bell, Sun, Moon, Sparkles } from 'lucide-react';
-import { Company } from '@/types';
+import { Company } from '../types';
 
 interface NavbarProps {
   selectedCompanyId?: string;
@@ -107,7 +107,7 @@ export function Navbar({
         <button
           onClick={toggleDarkMode}
           title={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
-          className="p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 transition-colors"
+          className="p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 transition-colors cursor-pointer"
         >
           {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
         </button>
