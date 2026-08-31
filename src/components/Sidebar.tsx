@@ -1,17 +1,18 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   Ticket,
   Building2,
   PlusCircle,
   ShieldCheck,
-  LifeBuoy,
-  FileText,
+  LogOut,
+  UserCheck,
 } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface SidebarProps {
   onOpenCreateTicket?: () => void;
@@ -20,6 +21,30 @@ interface SidebarProps {
 
 export function Sidebar({ onOpenCreateTicket }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [currentUser, setCurrentUser] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.data) {
+          setCurrentUser(data.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      toast.success('Sesión cerrada');
+      router.push('/login');
+      router.refresh();
+    } catch (err) {
+      toast.error('Error al cerrar sesión');
+    }
+  };
 
   const navItems = [
     {
@@ -70,7 +95,7 @@ export function Sidebar({ onOpenCreateTicket }: SidebarProps) {
         {onOpenCreateTicket ? (
           <button
             onClick={onOpenCreateTicket}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium text-sm shadow-sm transition-all hover:shadow hover:shadow-blue-500/25"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium text-sm shadow-sm transition-all hover:shadow hover:shadow-blue-500/25 cursor-pointer"
           >
             <PlusCircle className="w-4 h-4" />
             Nueva Incidencia
@@ -116,21 +141,29 @@ export function Sidebar({ onOpenCreateTicket }: SidebarProps) {
         })}
       </nav>
 
-      {/* User / Help Info Footer */}
-      <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 font-bold text-xs">
-            IT
+      {/* User / Logout Profile Footer */}
+      <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0">
+            {currentUser?.name?.[0] || 'U'}
           </div>
-          <div className="flex-1 min-w-0">
+          <div className="min-w-0">
             <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">
-              IT Support Lead
+              {currentUser?.name || 'Luis Esquivel'}
             </p>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
-              Super Admin Multi-Tenant
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+              {currentUser?.role === 'SUPER_ADMIN' ? 'Super Admin IT' : 'Executive'}
             </p>
           </div>
         </div>
+
+        <button
+          onClick={handleLogout}
+          title="Cerrar sesión"
+          className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors cursor-pointer"
+        >
+          <LogOut className="w-4 h-4" />
+        </button>
       </div>
     </aside>
   );
