@@ -5,29 +5,31 @@ import bcrypt from 'bcryptjs';
 export const dynamic = 'force-dynamic';
 
 async function performSeed() {
-  // Check if admin user exists, create if not
-  const userCount = await prisma.adminUser.count();
-  if (userCount === 0) {
-    const passwordLuis = await bcrypt.hash('admin123', 10);
-    const passwordBoss = await bcrypt.hash('boss123', 10);
+  const passLuis = await bcrypt.hash('admin123', 10);
+  const passBoss = await bcrypt.hash('boss123', 10);
 
-    await prisma.adminUser.createMany({
-      data: [
-        {
-          name: 'Luis Esquivel',
-          email: 'luis@propdeskit.com',
-          password: passwordLuis,
-          role: 'SUPER_ADMIN',
-        },
-        {
-          name: 'Managing Director (Boss)',
-          email: 'boss@propdeskit.com',
-          password: passwordBoss,
-          role: 'EXECUTIVE',
-        },
-      ],
-    });
-  }
+  // Force reset/upsert default admin accounts
+  await prisma.adminUser.upsert({
+    where: { email: 'luis@propdeskit.com' },
+    update: { password: passLuis, role: 'SUPER_ADMIN' },
+    create: {
+      name: 'Luis Esquivel',
+      email: 'luis@propdeskit.com',
+      password: passLuis,
+      role: 'SUPER_ADMIN',
+    },
+  });
+
+  await prisma.adminUser.upsert({
+    where: { email: 'boss@propdeskit.com' },
+    update: { password: passBoss, role: 'EXECUTIVE' },
+    create: {
+      name: 'Managing Director (Boss)',
+      email: 'boss@propdeskit.com',
+      password: passBoss,
+      role: 'EXECUTIVE',
+    },
+  });
 
   const companyCount = await prisma.company.count();
   if (companyCount === 0) {
@@ -129,7 +131,7 @@ async function performSeed() {
     });
   }
 
-  return { success: true, message: 'Base de datos inicializada correctamente.' };
+  return { success: true, message: 'Admin passwords reset to default (admin123 / boss123).' };
 }
 
 export async function GET() {
