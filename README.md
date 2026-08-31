@@ -1,137 +1,180 @@
-# PropDesk IT Support - Multi-Tenant Ticketing System
+# PropDesk IT Support — Multi-Tenant Real Estate Ticketing System
 
-Sistema profesional y robusto de gestión de incidencias y soporte técnico de IT diseñado para administradores que gestionan múltiples negocios de bienes raíces (**Real Estate**) en Estados Unidos.
+[![Next.js](https://img.shields.io/badge/Next.js-14.2-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat&logo=postgresql)](https://www.postgresql.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-5.21-2D3748?style=flat&logo=prisma)](https://www.prisma.io/)
+[![Deployment](https://img.shields.io/badge/Render-Blueprint%20Ready-46E3B7?style=flat&logo=render)](https://render.com/)
 
----
-
-## ✨ Características Principales
-
-1. **🏢 Aislamiento Multi-Empresa (Multi-Tenancy)**:
-   - Registro de múltiples negocios de Real Estate con datos de contacto y administración.
-   - Vista aislada por empresa o panel global de Super Admin.
-
-2. **🔢 Numeración Atómica con Prefijos Personalizables**:
-   - Cada empresa define su propio código o prefijo (ej. `APEX`, `SUNSET`, `METRO`, `HCREST`).
-   - Las incidencias generan de forma automática y atómica números de ticket secuenciales con el prefijo correspondiente (ej. `SUNSET-0001`, `APEX-0024`).
-
-3. **📊 Datos de Incidencias Centralizados**:
-   - **Número de Incidencia** único y correlativo.
-   - **Empresa** que lo generó.
-   - **Usuario** que lo generó (Nombre y Email).
-   - **Incidencia Exacta** (Título resumido y descripción detallada).
-   - **Nivel de Prioridad**: *Baja (LOW)*, *Media (MEDIUM)*, *Alta (HIGH)*, *Crítica (CRITICAL)*.
-   - **Estados de Resolución**: *Abierto (OPEN)*, *En Progreso (IN_PROGRESS)*, *En Espera (WAITING)*, *Resuelto (RESOLVED)*, *Cerrado (CLOSED)*.
-   - **Categorías de IT**: Hardware, Software, Red/Internet, Accesos/Contraseñas, Correo/Outlook, Plataformas MLS Inmobiliarias, Impresoras, Seguridad.
-
-4. **⚡ Panel de Control de IT (Super Admin Dashboard)**:
-   - Tarjetas de KPIs y métricas en tiempo real.
-   - Alertas automáticas para incidencias críticas y urgentes.
-   - Búsqueda instantánea y filtros avanzados.
-   - Notas de solución (públicas para el cliente) y notas internas de soporte de IT (privadas).
-   - Trazabilidad y registro de auditoría cronológico de cada cambio.
-   - Exportación de reportes a formato **CSV**.
-
-5. **🌐 Portal de Clientes / Agentes Inmobiliarios**:
-   - Formulario web optimizado y accesible para que los agentes y personal de las empresas reporten problemas en segundos con confirmación inmediata del ID generado.
+A modern, enterprise-grade multi-tenant IT incident management and ticketing platform engineered specifically for IT Leads, MSPs, and administrators managing technical infrastructure across multiple **US Real Estate businesses, brokerage firms, and property management companies**.
 
 ---
 
-## 🛠️ Stack Tecnológico
+## 🌟 Key Capabilities
 
-- **Frontend & Backend**: Next.js 14 (App Router, Server Actions, REST API, React 18, TypeScript).
-- **Estilos & UI**: Tailwind CSS, Lucide Icons, Sonner (Toasts), Modo Oscuro / Claro.
-- **Base de Datos & ORM**: Prisma ORM con SQLite (desarrollo local sin configuración previa) y compatibilidad total con PostgreSQL (Docker / Cloud).
-- **Contenedores**: Dockerfile multi-etapa y `docker-compose.yml` listos para producción.
+### 1. 🏢 Multi-Tenant Brokerage Isolation
+- Register, manage, and isolate technical support operations across multiple independent real estate businesses.
+- Switch between **Global Super Admin View** (all businesses combined) or **Single Company Isolated View**.
+
+### 2. 🔢 Atomic Incident Numbering with Custom Prefixes
+- Every real estate company configures its own custom ticket ID prefix (e.g., `APEX`, `SUNSET`, `METRO`, `REALTY`).
+- Race-condition-free, atomic transaction counters guarantee clean sequential incident IDs (e.g., `SUNSET-0001`, `APEX-0024`).
+
+### 3. 🔐 Enterprise Authentication & Role Protection
+- Role-based middleware protecting administrative dashboards, incident management, and brokerage directories.
+- Built-in session security with JWTs, bcrypt password hashing, and HTTP-only cookies.
+- **Preconfigured Super Admin (`luis@propdeskit.com`)** & **Executive Director (`boss@propdeskit.com`)** accounts with automatic bootstrapping on fresh deployments.
+
+### 4. 📬 Automated Real-Time Email Notifications
+- Real-time formatted HTML dispatch to the IT Lead whenever a new incident is submitted.
+- Includes incident priority badges, exact error descriptions, requester contact details, and a 1-click button linking directly to the management dashboard.
+- Full SMTP support (Gmail App Passwords, Microsoft 365 / Outlook, Amazon SES, SendGrid, Brevo).
+
+### 5. 📊 Centralized IT Control & Audit Trails
+- **Real-Time SLA & KPI Cards**: Total tickets, open pending count, in-progress items, and critical/high alerts.
+- **Dual-Note System**: Public resolution notes (client/agent-facing) and confidential internal IT notes (technical credentials, IP addresses, vendor ticket numbers).
+- **Full Audit History**: Chronological timeline tracking every status change, reassignment, and note update.
+- **One-Click CSV Export**: Download complete incident logs for client reporting and billing.
+
+### 6. 🌐 Streamlined Client & Realtor Submit Portal (`/submit`)
+- Dedicated, intuitive public portal allowing real estate agents, brokers, and property managers to submit technical issues without needing admin credentials.
+- Instant ticket number confirmation upon submission.
 
 ---
 
-## 🚀 Instalación y Puesta en Marcha Local
+## 🛠️ Architecture & Tech Stack
 
-### 1. Clonar el repositorio
+| Layer | Technology |
+|---|---|
+| **Framework** | [Next.js 14](https://nextjs.org/) (App Router, Server Actions, REST API) |
+| **Language** | [TypeScript](https://www.typescriptlang.org/) (Strict Mode) |
+| **Styling & UI** | [Tailwind CSS](https://tailwindcss.com/), [Lucide React](https://lucide.dev/), [Sonner](https://sonner.emilkowal.ski/) |
+| **Database & ORM** | [PostgreSQL 16](https://www.postgresql.org/) with [Prisma ORM](https://www.prisma.io/) |
+| **Authentication** | [Jose](https://github.com/panva/jose) (JWT) + [bcryptjs](https://github.com/dcodeIO/bcrypt.js) |
+| **Email Service** | [Nodemailer](https://nodemailer.com/) with responsive HTML templates |
+| **Infrastructure** | [Render](https://render.com/) (Infrastructure-as-Code via `render.yaml`) & [Docker](https://www.docker.com/) |
+
+---
+
+## 🚀 Quick Start (Local Development)
+
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/L-Esquivel/TicketingSystem.git
 cd TicketingSystem
 ```
 
-### 2. Instalar dependencias
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
-### 3. Configurar y poblar la Base de Datos
-El proyecto viene preconfigurado con SQLite para desarrollo local inmediato:
+### 3. Configure Local PostgreSQL (via Docker)
+Start the PostgreSQL container on port `5433`:
 ```bash
-# Sincronizar esquema de base de datos
-npx prisma db push
-
-# Poblar con datos de prueba realistas (Empresas de Real Estate y tickets de ejemplo)
-npx ts-node prisma/seed.ts
+docker-compose up -d
 ```
 
-### 4. Iniciar el Servidor de Desarrollo
+### 4. Push Database Schema & Seed
+```bash
+npx prisma db push
+npm run db:seed
+```
+
+### 5. Start Development Server
 ```bash
 npm run dev
 ```
-Abre tu navegador en `http://localhost:3000`.
+Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
 ---
 
-## 🐳 Ejecución con Docker
+## 🔑 Default Login Credentials
 
-Si prefieres ejecutar todo con Docker y PostgreSQL:
+| User / Role | Email | Password | Access Level |
+|---|---|---|---|
+| **Luis (IT Lead)** | `luis@propdeskit.com` | `admin123` | Super Admin (Full Control) |
+| **Director (Boss)** | `boss@propdeskit.com` | `boss123` | Executive Oversight |
 
-```bash
-docker-compose up -d --build
+*(A 1-click credential switcher is built directly into the login screen for rapid testing).*
+
+---
+
+## ☁️ Production Deployment on Render
+
+This repository includes a native **Render Blueprint (`render.yaml`)** that automatically provisions both the Next.js Web Service and a Managed PostgreSQL Database:
+
+1. Connect your GitHub repository to [Render](https://dashboard.render.com/).
+2. Go to **Blueprints > New Blueprint Instance** and select your repository.
+3. Render will automatically:
+   - Provision the managed **PostgreSQL** instance.
+   - Run `npx prisma db push` to generate the relational schema.
+   - Compile the Next.js production build and bind environment variables.
+
+---
+
+## ⚙️ Environment Variables Reference (`.env`)
+
+```env
+# Database Connection URL (PostgreSQL)
+DATABASE_URL="postgresql://postgres:postgrespassword@localhost:5433/ticketing_db?schema=public"
+
+# App & Security Configuration
+NEXT_PUBLIC_APP_NAME="PropDesk IT Support"
+NEXT_PUBLIC_APP_DESCRIPTION="Multi-Tenant IT Ticketing System for Real Estate Businesses"
+NEXT_PUBLIC_APP_URL="https://your-app.onrender.com"
+JWT_SECRET="generate-a-secure-random-secret-key"
+
+# 📧 SMTP Email Notifications (Optional - for live email delivery)
+NOTIFICATION_EMAIL="your-personal-email@gmail.com"
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT=587
+SMTP_USER="your-email@gmail.com"
+SMTP_PASS="your-16-character-google-app-password"
+SMTP_FROM="\"PropDesk IT Alerts\" <your-email@gmail.com>"
 ```
-La aplicación estará disponible en `http://localhost:3000` conectada a su propia instancia de PostgreSQL en el puerto `5432`.
 
 ---
 
-## 📂 Estructura del Proyecto
+## 📂 Project Structure
 
 ```
 ├── prisma/
-│   ├── schema.prisma              # Definición de modelos (Company, Ticket, TicketHistory)
-│   └── seed.ts                    # Datos de prueba para Real Estate
+│   ├── schema.prisma              # Relational models (AdminUser, Company, Ticket, TicketHistory)
+│   └── seed.ts                    # Realistic Real Estate sample seed data
 ├── src/
 │   ├── app/
-│   │   ├── api/                   # Endpoints REST para Tickets, Empresas y Estadísticas
-│   │   │   ├── companies/
-│   │   │   ├── tickets/
-│   │   │   └── stats/
-│   │   ├── companies/page.tsx     # Gestión de empresas y configuración de prefijos
-│   │   ├── tickets/page.tsx       # Listado y gestión completa de incidencias
-│   │   ├── submit/page.tsx        # Portal para reporte de tickets por clientes
-│   │   ├── page.tsx               # Dashboard principal de IT Support
-│   │   └── layout.tsx             # Layout global con Toaster y temas
-│   ├── components/                # Componentes modulares y reutilizables
-│   │   ├── Navbar.tsx
-│   │   ├── Sidebar.tsx
-│   │   ├── StatsOverview.tsx
-│   │   ├── TicketTable.tsx
-│   │   ├── TicketDetailModal.tsx
-│   │   ├── CreateTicketModal.tsx
-│   │   ├── CreateCompanyModal.tsx
-│   │   ├── PriorityBadge.tsx
-│   │   └── StatusBadge.tsx
+│   │   ├── api/                   # REST API routes (Auth, Companies, Tickets, Stats, Seed)
+│   │   ├── companies/page.tsx     # Brokerage directory, edit & delete controls
+│   │   ├── tickets/page.tsx       # Dedicated incident management & table
+│   │   ├── submit/page.tsx        # Client-facing submission portal
+│   │   ├── login/page.tsx         # Authentication screen with quick switcher
+│   │   ├── page.tsx               # IT Support central dashboard
+│   │   └── layout.tsx             # Global layout & toast notification provider
+│   ├── components/                # Modular reusable React components
+│   │   ├── Navbar.tsx             # Top bar, search, dark mode & company selector
+│   │   ├── Sidebar.tsx            # Navigation & profile controls
+│   │   ├── StatsOverview.tsx      # SLA & KPI metric cards
+│   │   ├── TicketTable.tsx        # Interactive ticket table with CSV export
+│   │   ├── TicketDetailModal.tsx  # Dual-note inspector & status changer
+│   │   ├── CreateTicketModal.tsx  # Incident creation modal with prefix preview
+│   │   ├── CreateCompanyModal.tsx # Company registration modal
+│   │   └── EditCompanyModal.tsx   # Company editing modal
 │   ├── lib/
-│   │   ├── prisma.ts              # Cliente Singleton de Prisma
-│   │   ├── tickets.ts             # Generador atómico de secuencias con prefijo
-│   │   └── utils.ts               # Utilidades, formateo de fechas y categorías
+│   │   ├── auth.ts                # JWT verification, password hashing & session helpers
+│   │   ├── email.ts               # Nodemailer integration & HTML email templates
+│   │   ├── prisma.ts              # Singleton Prisma client
+│   │   ├── tickets.ts             # Atomic sequence generation logic
+│   │   └── utils.ts               # Status, priority & category configurations
 │   └── types/
-│       └── index.ts               # Interfaces y tipos TypeScript
-├── Dockerfile
-├── docker-compose.yml
-├── package.json
-└── tailwind.config.ts
+│       └── index.ts               # Shared TypeScript interfaces
+├── render.yaml                    # Render Blueprint Infrastructure-as-Code
+├── docker-compose.yml             # Local PostgreSQL container configuration
+└── package.json                   # Dependencies and npm scripts
 ```
 
 ---
 
-## 🔒 Variables de Entorno (`.env`)
-
-```env
-DATABASE_URL="file:./dev.db"
-NEXT_PUBLIC_APP_NAME="PropDesk IT Support"
-NEXT_PUBLIC_APP_DESCRIPTION="Multi-Tenant IT Ticketing System for Real Estate Businesses"
-```
+## 📄 License
+This project is proprietary and maintained for Real Estate IT Operations.
