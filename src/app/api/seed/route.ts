@@ -1,33 +1,25 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../lib/prisma';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
 
 async function performSeed() {
-  const passLuis = await bcrypt.hash('admin123', 10);
-  const passBoss = await bcrypt.hash('boss123', 10);
+  const initialEmail = (process.env.INITIAL_ADMIN_EMAIL || 'admin@propdeskit.com').trim().toLowerCase();
+  const initialPassword = process.env.INITIAL_ADMIN_PASSWORD || 'ChangeMeImmediate2026!';
+  const hashedPassword = await bcrypt.hash(initialPassword, 10);
 
-  // Force reset/upsert default admin accounts
+  // Upsert operator initial admin account
   await prisma.adminUser.upsert({
-    where: { email: 'luis@propdeskit.com' },
-    update: { password: passLuis, role: 'SUPER_ADMIN' },
+    where: { email: initialEmail },
+    update: {},
     create: {
-      name: 'Luis Esquivel',
-      email: 'luis@propdeskit.com',
-      password: passLuis,
+      name: process.env.INITIAL_ADMIN_NAME || 'Super Administrator',
+      email: initialEmail,
+      password: hashedPassword,
       role: 'SUPER_ADMIN',
-    },
-  });
-
-  await prisma.adminUser.upsert({
-    where: { email: 'boss@propdeskit.com' },
-    update: { password: passBoss, role: 'EXECUTIVE' },
-    create: {
-      name: 'Managing Director (Boss)',
-      email: 'boss@propdeskit.com',
-      password: passBoss,
-      role: 'EXECUTIVE',
+      mustChangePassword: true,
     },
   });
 
@@ -99,7 +91,7 @@ async function performSeed() {
         ticketId: t1.id,
         action: 'CREATED',
         actor: 'Carlos Ramirez',
-        details: 'Incidencia reportada con prioridad CRÍTICA.',
+        details: 'Incident reported with CRITICAL priority.',
         createdAt: oneHourAgo,
       },
     });
@@ -115,7 +107,7 @@ async function performSeed() {
         description: 'Agents attempting to log into CRMLS via our Okta SSO dashboard are receiving error code SAML-403.',
         priority: 'HIGH',
         status: 'IN_PROGRESS',
-        assignedTo: 'Luis (IT Lead)',
+        assignedTo: 'IT Lead',
         createdAt: threeHoursAgo,
       },
     });
@@ -125,13 +117,13 @@ async function performSeed() {
         ticketId: t2.id,
         action: 'CREATED',
         actor: 'Sarah Jenkins',
-        details: 'Incidencia creada con prioridad ALTA.',
+        details: 'Incident created with HIGH priority.',
         createdAt: threeHoursAgo,
       },
     });
   }
 
-  return { success: true, message: 'Admin passwords reset to default (admin123 / boss123).' };
+  return { success: true, message: 'Database initialized successfully.' };
 }
 
 export async function GET() {

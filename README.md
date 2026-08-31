@@ -90,14 +90,14 @@ Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
 ---
 
-## 🔑 Initial Setup & Administrative Access
+## 🔑 Initial Operator Setup & Administrative Access
 
-| User / Role | Default Initial Email | Initial Access Level |
-|---|---|---|
-| **IT Lead (Super Admin)** | `luis@propdeskit.com` | Super Admin (Full Control) |
-| **Director (Executive)** | `boss@propdeskit.com` | Executive Oversight |
+On first deployment or fresh database initialization, the operator defines the initial Super Administrator credentials using environment variables:
 
-*(Default credentials are auto-bootstrapped on fresh database initialization. Passwords can be updated securely at any time from the **Users & Access** module).*
+- `INITIAL_ADMIN_EMAIL`: The operator's primary administrative email address.
+- `INITIAL_ADMIN_PASSWORD`: The initial temporary administrator password.
+
+> 🔒 **Mandatory Password Change**: Any initial bootstrapped account is flagged with `mustChangePassword: true`. Upon first login, the platform forces an immediate, mandatory password update before granting access to the dashboard.
 
 ---
 
@@ -107,7 +107,8 @@ This repository includes a native **Render Blueprint (`render.yaml`)** that auto
 
 1. Connect your GitHub repository to [Render](https://dashboard.render.com/).
 2. Go to **Blueprints > New Blueprint Instance** and select your repository.
-3. Render will automatically:
+3. Define your initial administrator credentials (`INITIAL_ADMIN_EMAIL` and `INITIAL_ADMIN_PASSWORD`) in Render Environment Variables.
+4. Render will automatically:
    - Provision the managed **PostgreSQL** instance.
    - Run `npx prisma db push` to generate the relational schema.
    - Compile the Next.js production build and bind environment variables.
@@ -119,6 +120,10 @@ This repository includes a native **Render Blueprint (`render.yaml`)** that auto
 ```env
 # Database Connection URL (PostgreSQL)
 DATABASE_URL="postgresql://postgres:postgrespassword@localhost:5433/ticketing_db?schema=public"
+
+# Operator Initial Admin Bootstrapping
+INITIAL_ADMIN_EMAIL="admin@yourdomain.com"
+INITIAL_ADMIN_PASSWORD="OperatorSetSecurePassword2026!"
 
 # App & Security Configuration
 NEXT_PUBLIC_APP_NAME="PropDesk IT Support"

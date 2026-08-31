@@ -11,6 +11,7 @@ export interface SessionUser {
   name: string;
   email: string;
   role: 'SUPER_ADMIN' | 'EXECUTIVE' | string;
+  mustChangePassword?: boolean;
 }
 
 export async function hashPassword(password: string): Promise<string> {
@@ -27,6 +28,7 @@ export async function createSessionToken(user: SessionUser): Promise<string> {
     name: user.name,
     email: user.email,
     role: user.role,
+    mustChangePassword: user.mustChangePassword ?? false,
   })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()

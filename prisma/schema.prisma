@@ -14,8 +14,9 @@ model AdminUser {
   name      String
   email     String   @unique
   password  String   // Hashed bcrypt password
-  role      String   @default("SUPER_ADMIN") // SUPER_ADMIN, EXECUTIVE
-  avatar    String?
+  role               String   @default("SUPER_ADMIN") // SUPER_ADMIN, EXECUTIVE
+  mustChangePassword Boolean  @default(false)
+  avatar             String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

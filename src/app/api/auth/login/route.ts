@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../../lib/prisma';
 import { verifyPassword, createSessionToken, hashPassword } from '../../../../lib/auth';
+import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,32 +18,39 @@ export async function POST(request: Request) {
 
     const cleanEmail = email.trim().toLowerCase();
 
-    // Auto-bootstrap admin users if database is fresh/empty
+    // Auto-bootstrap operator initial admin user if database is fresh/empty
     const totalUsers = await prisma.adminUser.count();
     if (totalUsers === 0) {
-      const passLuis = await hashPassword('admin123');
-      const passBoss = await hashPassword('boss123');
+      const initialEmail = process.env.INITIAL_ADMIN_EMAIL || 'admin@propdeskit.com';
+      const initialName = process.env.INITIAL_ADMIN_NAME || 'Super Administrator';
+      const rawInitialPassword = process.env.INITIAL_ADMIN_PASSWORD || crypto.randomBytes(8).toString('hex') + 'A1!';
 
-      await prisma.adminUser.createMany({
-        data: [
-          {
-            name: 'Luis Esquivel',
-            email: 'luis@propdeskit.com',
-            password: passLuis,
-            role: 'SUPER_ADMIN',
-          },
-          {
-            name: 'Managing Director (Boss)',
-            email: 'boss@propdeskit.com',
-            password: passBoss,
-            role: 'EXECUTIVE',
-          },
-        ],
+      const hashedInitialPassword = await hashPassword(rawInitialPassword);
+
+      await prisma.adminUser.create({
+        data: {
+          name: initialName,
+          email: initialEmail.trim().toLowerCase(),
+          password: hashedInitialPassword,
+          role: 'SUPER_ADMIN',
+          mustChangePassword: true,
+        },
       });
+
+      console.warn(`
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ ⚠️ [SECURITY NOTICE] INITIAL SUPER ADMIN ACCOUNT CREATED                    │
+│                                                                             │
+│ Email:    ${initialEmail.padEnd(58)} │
+│ Status:   MUST CHANGE PASSWORD ON FIRST LOGIN                              │
+│                                                                             │
+│ Please change your password immediately upon first dashboard login.         │
+└─────────────────────────────────────────────────────────────────────────────┘
+      `);
     }
 
     // Check if user exists
-    let user = await prisma.adminUser.findUnique({
+    const user = await prisma.adminUser.findUnique({
       where: { email: cleanEmail },
     });
 
@@ -53,18 +61,7 @@ export async function POST(request: Request) {
       );
     }
 
-    let isValid = await verifyPassword(password, user.password);
-
-    // Fail-safe auto-recovery for default accounts
-    if (!isValid && (password === 'admin123' || password === 'boss123')) {
-      const newHash = await hashPassword(password);
-      user = await prisma.adminUser.update({
-        where: { id: user.id },
-        data: { password: newHash },
-      });
-      isValid = true;
-    }
-
+    const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
       return NextResponse.json(
         { success: false, error: 'Incorrect password' },
@@ -77,6 +74,7 @@ export async function POST(request: Request) {
       name: user.name,
       email: user.email,
       role: user.role,
+      mustChangePassword: user.mustChangePassword,
     };
 
     const token = await createSessionToken(sessionUser);

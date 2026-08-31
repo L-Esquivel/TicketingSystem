@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Starting database seeding for Real Estate IT Support with Auth...');
+  console.log('🌱 Starting database seeding for Real Estate IT Support...');
 
   // Clean existing data
   await prisma.ticketHistory.deleteMany({});
@@ -12,31 +12,24 @@ async function main() {
   await prisma.company.deleteMany({});
   await prisma.adminUser.deleteMany({});
 
-  // 1. Create Admin Accounts (Luis & Boss)
-  const passwordLuis = await bcrypt.hash('admin123', 10);
-  const passwordBoss = await bcrypt.hash('boss123', 10);
+  const initialEmail = (process.env.INITIAL_ADMIN_EMAIL || 'admin@propdeskit.com').trim().toLowerCase();
+  const initialPassword = process.env.INITIAL_ADMIN_PASSWORD || 'ChangeMeImmediate2026!';
+  const hashedPassword = await bcrypt.hash(initialPassword, 10);
 
-  const luis = await prisma.adminUser.create({
+  // 1. Create Initial Admin Account
+  const admin = await prisma.adminUser.create({
     data: {
-      name: 'Luis Esquivel',
-      email: 'luis@propdeskit.com',
-      password: passwordLuis,
+      name: process.env.INITIAL_ADMIN_NAME || 'Super Administrator',
+      email: initialEmail,
+      password: hashedPassword,
       role: 'SUPER_ADMIN',
+      mustChangePassword: true,
     },
   });
 
-  const boss = await prisma.adminUser.create({
-    data: {
-      name: 'Managing Director (Boss)',
-      email: 'boss@propdeskit.com',
-      password: passwordBoss,
-      role: 'EXECUTIVE',
-    },
-  });
-
-  console.log('✅ Admin Accounts created:');
-  console.log('   - Luis: luis@propdeskit.com (admin123)');
-  console.log('   - Jefe: boss@propdeskit.com (boss123)');
+  console.log('✅ Initial Admin Account created:');
+  console.log(`   - Email: ${initialEmail}`);
+  console.log('   - Flag: mustChangePassword = true');
 
   // 2. Create Real Estate Companies with custom prefixes
   const apex = await prisma.company.create({
@@ -108,7 +101,7 @@ async function main() {
       ticketId: t1.id,
       action: 'CREATED',
       actor: 'Carlos Ramirez',
-      details: 'Incidencia reportada con prioridad CRÍTICA debido a corte total de red.',
+      details: 'Incident reported with CRITICAL priority due to network outage.',
       createdAt: oneHourAgo,
     },
   });
@@ -124,7 +117,7 @@ async function main() {
       description: 'Agents attempting to log into CRMLS via our Okta SSO dashboard are receiving error code SAML-403.',
       priority: 'HIGH',
       status: 'IN_PROGRESS',
-      assignedTo: 'Luis (IT Lead)',
+      assignedTo: 'IT Lead',
       internalNotes: 'Contacted CRMLS tech support identity provider endpoint to refresh X.509 certificate.',
       createdAt: threeHoursAgo,
       updatedAt: oneHourAgo,
@@ -137,14 +130,14 @@ async function main() {
         ticketId: t2.id,
         action: 'CREATED',
         actor: 'Sarah Jenkins',
-        details: 'Incidencia creada con prioridad ALTA.',
+        details: 'Incident created with HIGH priority.',
         createdAt: threeHoursAgo,
       },
       {
         ticketId: t2.id,
         action: 'STATUS_CHANGED',
-        actor: 'Luis (IT Lead)',
-        details: 'Estado cambiado a EN PROGRESO. Asignado a Luis (IT Lead).',
+        actor: 'IT Lead',
+        details: 'Status changed to IN_PROGRESS. Assigned to IT Lead.',
         createdAt: oneHourAgo,
       },
     ],
@@ -161,8 +154,8 @@ async function main() {
       description: 'Accounting received an email requesting a wire transfer change for Escrow #8841.',
       priority: 'HIGH',
       status: 'RESOLVED',
-      assignedTo: 'Luis (IT Lead)',
-      resolutionNotes: 'Quarantined the phishing email across all Microsoft 365 mailboxes, blocked the sender domain in Defender.',
+      assignedTo: 'IT Lead',
+      resolutionNotes: 'Quarantined the phishing email across all mailboxes, blocked sender domain.',
       createdAt: oneDayAgo,
       updatedAt: oneDayAgo,
       resolvedAt: oneDayAgo,
@@ -173,14 +166,14 @@ async function main() {
     data: {
       ticketId: t3.id,
       action: 'RESOLVED',
-      actor: 'Luis (IT Lead)',
-      details: 'Incidencia resuelta. Dominio bloqueado.',
+      actor: 'IT Lead',
+      details: 'Incident resolved. Sender domain blocked.',
       createdAt: oneDayAgo,
     },
   });
 
   console.log('✅ Tickets created.');
-  console.log('🎉 Database seeding completed successfully in PostgreSQL!');
+  console.log('🎉 Database seeding completed successfully!');
 }
 
 main()

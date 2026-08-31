@@ -82,10 +82,18 @@ function LoginForm() {
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1.5">
-            <Lock className="w-3.5 h-3.5 text-slate-400" />
-            Password
-          </label>
+          <div className="flex items-center justify-between mb-1.5">
+            <label className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+              <Lock className="w-3.5 h-3.5 text-slate-400" />
+              Password
+            </label>
+            <span
+              onClick={() => toast.info('To reset your credentials, please contact your IT Super Admin.')}
+              className="text-[11px] text-slate-400 hover:text-blue-400 cursor-pointer transition-colors"
+            >
+              Forgot password?
+            </span>
+          </div>
           <input
             type="password"
             required
