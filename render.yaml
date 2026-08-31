@@ -16,7 +16,7 @@ services:
     runtime: node
     plan: free # or starter
     region: oregon
-    buildCommand: npm install && npx prisma generate && npx prisma db push && npm run build
+    buildCommand: npm install && npx prisma generate && npx prisma db push --accept-data-loss && npm run build
     startCommand: npm start
     envVars:
       - key: DATABASE_URL
@@ -29,3 +29,5 @@ services:
         value: PropDesk IT Support
       - key: NEXT_PUBLIC_APP_DESCRIPTION
         value: Multi-Tenant IT Ticketing System for Real Estate Businesses
+      - key: JWT_SECRET
+        generateValue: true
