@@ -177,4 +177,4 @@ SMTP_FROM="\"PropDesk IT Alerts\" <your-email@gmail.com>"
 ---
 
 ## 📄 License
-This project is proprietary and maintained for Real Estate IT Operations.
+This project is proprietary and maintained for Luis Esquivel.
