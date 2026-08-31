@@ -6,11 +6,7 @@ import {
   ShieldCheck,
   Mail,
   Lock,
-  ArrowRight,
-  Sparkles,
-  CheckCircle2,
   KeyRound,
-  Building2,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -53,12 +49,6 @@ function LoginForm() {
     }
   };
 
-  const handleQuickFill = (fillEmail: string, fillPass: string) => {
-    setEmail(fillEmail);
-    setPassword(fillPass);
-    toast.info(`Loaded credentials for ${fillEmail}`);
-  };
-
   return (
     <div className="w-full max-w-md bg-slate-900/80 border border-slate-800 backdrop-blur-xl p-8 rounded-3xl shadow-2xl space-y-6">
       {/* Brand & Title */}
@@ -86,7 +76,7 @@ function LoginForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="luis@propdeskit.com"
+            placeholder="admin@propdeskit.com"
             className="w-full px-4 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
           />
         </div>
@@ -122,39 +112,7 @@ function LoginForm() {
         </button>
       </form>
 
-      {/* Quick Credentials Switcher */}
-      <div className="pt-4 border-t border-slate-800/80 space-y-2">
-        <p className="text-[11px] font-semibold text-slate-400 text-center uppercase tracking-wider flex items-center justify-center gap-1">
-          <Sparkles className="w-3 h-3 text-amber-400" />
-          Preconfigured Quick Access
-        </p>
-
-        <div className="grid grid-cols-2 gap-2 text-left">
-          <button
-            type="button"
-            onClick={() => handleQuickFill('luis@propdeskit.com', 'admin123')}
-            className="p-2.5 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 hover:border-blue-500/50 text-xs transition-all text-slate-300 cursor-pointer"
-          >
-            <div className="font-bold text-white flex items-center gap-1">
-              🛠️ Luis (IT Lead)
-            </div>
-            <div className="text-[10px] text-slate-400 font-mono">admin123</div>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleQuickFill('boss@propdeskit.com', 'boss123')}
-            className="p-2.5 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 hover:border-indigo-500/50 text-xs transition-all text-slate-300 cursor-pointer"
-          >
-            <div className="font-bold text-white flex items-center gap-1">
-              👔 Director (Boss)
-            </div>
-            <div className="text-[10px] text-slate-400 font-mono">boss123</div>
-          </button>
-        </div>
-      </div>
-
-      <div className="text-center pt-2">
+      <div className="text-center pt-2 border-t border-slate-800/60">
         <a
           href="/submit"
           className="text-xs text-slate-400 hover:text-blue-400 transition-colors"

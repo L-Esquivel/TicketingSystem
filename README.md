@@ -90,14 +90,14 @@ Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
 ---
 
-## 🔑 Default Login Credentials
+## 🔑 Initial Setup & Administrative Access
 
-| User / Role | Email | Password | Access Level |
-|---|---|---|---|
-| **Luis (IT Lead)** | `luis@propdeskit.com` | `admin123` | Super Admin (Full Control) |
-| **Director (Boss)** | `boss@propdeskit.com` | `boss123` | Executive Oversight |
+| User / Role | Default Initial Email | Initial Access Level |
+|---|---|---|
+| **IT Lead (Super Admin)** | `luis@propdeskit.com` | Super Admin (Full Control) |
+| **Director (Executive)** | `boss@propdeskit.com` | Executive Oversight |
 
-*(A 1-click credential switcher is built directly into the login screen for rapid testing).*
+*(Default credentials are auto-bootstrapped on fresh database initialization. Passwords can be updated securely at any time from the **Users & Access** module).*
 
 ---
 
