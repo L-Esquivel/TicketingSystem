@@ -1,18 +1,36 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../lib/prisma';
+import bcrypt from 'bcryptjs';
 
 export const dynamic = 'force-dynamic';
 
-export async function POST() {
-  try {
-    const count = await prisma.company.count();
-    if (count > 0) {
-      return NextResponse.json({
-        success: true,
-        message: 'La base de datos ya contiene información.',
-      });
-    }
+async function performSeed() {
+  // Check if admin user exists, create if not
+  const userCount = await prisma.adminUser.count();
+  if (userCount === 0) {
+    const passwordLuis = await bcrypt.hash('admin123', 10);
+    const passwordBoss = await bcrypt.hash('boss123', 10);
 
+    await prisma.adminUser.createMany({
+      data: [
+        {
+          name: 'Luis Esquivel',
+          email: 'luis@propdeskit.com',
+          password: passwordLuis,
+          role: 'SUPER_ADMIN',
+        },
+        {
+          name: 'Managing Director (Boss)',
+          email: 'boss@propdeskit.com',
+          password: passwordBoss,
+          role: 'EXECUTIVE',
+        },
+      ],
+    });
+  }
+
+  const companyCount = await prisma.company.count();
+  if (companyCount === 0) {
     // 1. Create Real Estate Companies
     const apex = await prisma.company.create({
       data: {
@@ -23,7 +41,7 @@ export async function POST() {
         contactPhone: '+1 (310) 555-0142',
         address: '9454 Wilshire Blvd, Beverly Hills, CA',
         notes: 'Luxury residential and commercial brokerage with 45 agents.',
-        ticketCounter: 3,
+        ticketCounter: 2,
       },
     });
 
@@ -54,6 +72,10 @@ export async function POST() {
     });
 
     // 2. Create Initial Sample Tickets
+    const now = new Date();
+    const oneHourAgo = new Date(now.getTime() - 1000 * 60 * 60);
+    const threeHoursAgo = new Date(now.getTime() - 1000 * 60 * 60 * 3);
+
     const t1 = await prisma.ticket.create({
       data: {
         ticketNumber: 'SUNSET-0001',
@@ -66,6 +88,7 @@ export async function POST() {
         priority: 'CRITICAL',
         status: 'OPEN',
         assignedTo: 'IT Support Team',
+        createdAt: oneHourAgo,
       },
     });
 
@@ -75,6 +98,7 @@ export async function POST() {
         action: 'CREATED',
         actor: 'Carlos Ramirez',
         details: 'Incidencia reportada con prioridad CRÍTICA.',
+        createdAt: oneHourAgo,
       },
     });
 
@@ -90,6 +114,7 @@ export async function POST() {
         priority: 'HIGH',
         status: 'IN_PROGRESS',
         assignedTo: 'Luis (IT Lead)',
+        createdAt: threeHoursAgo,
       },
     });
 
@@ -99,13 +124,27 @@ export async function POST() {
         action: 'CREATED',
         actor: 'Sarah Jenkins',
         details: 'Incidencia creada con prioridad ALTA.',
+        createdAt: threeHoursAgo,
       },
     });
+  }
 
-    return NextResponse.json({
-      success: true,
-      message: 'Base de datos poblada exitosamente con datos de prueba de Real Estate.',
-    });
+  return { success: true, message: 'Base de datos inicializada correctamente.' };
+}
+
+export async function GET() {
+  try {
+    const result = await performSeed();
+    return NextResponse.json(result);
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
+
+export async function POST() {
+  try {
+    const result = await performSeed();
+    return NextResponse.json(result);
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }

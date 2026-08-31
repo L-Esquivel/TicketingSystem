@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../../lib/prisma';
-import { verifyPassword, createSessionToken } from '../../../../lib/auth';
+import { verifyPassword, createSessionToken, hashPassword } from '../../../../lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,6 +16,30 @@ export async function POST(request: Request) {
     }
 
     const cleanEmail = email.trim().toLowerCase();
+
+    // Auto-bootstrap admin users if database is fresh/empty
+    const totalUsers = await prisma.adminUser.count();
+    if (totalUsers === 0) {
+      const passLuis = await hashPassword('admin123');
+      const passBoss = await hashPassword('boss123');
+
+      await prisma.adminUser.createMany({
+        data: [
+          {
+            name: 'Luis Esquivel',
+            email: 'luis@propdeskit.com',
+            password: passLuis,
+            role: 'SUPER_ADMIN',
+          },
+          {
+            name: 'Managing Director (Boss)',
+            email: 'boss@propdeskit.com',
+            password: passBoss,
+            role: 'EXECUTIVE',
+          },
+        ],
+      });
+    }
 
     // Check if user exists
     const user = await prisma.adminUser.findUnique({
