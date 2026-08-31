@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Building2, Search, Bell, Sun, Moon, Sparkles } from 'lucide-react';
+import { Building2, Search, Sun, Moon } from 'lucide-react';
 import { Company } from '../types';
 
 interface NavbarProps {
@@ -17,7 +17,6 @@ export function Navbar({
   onCompanyChange,
   searchQuery = '',
   onSearchChange,
-  onOpenCreateTicket,
 }: NavbarProps) {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [isDark, setIsDark] = useState(false);
@@ -60,7 +59,7 @@ export function Navbar({
         <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700/60">
           <Building2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
           <span className="text-xs font-medium text-slate-500 dark:text-slate-400 hidden sm:inline">
-            Empresa:
+            Company:
           </span>
           <select
             value={selectedCompanyId}
@@ -68,7 +67,7 @@ export function Navbar({
             className="bg-transparent text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 focus:outline-none cursor-pointer pr-1"
           >
             <option value="ALL" className="dark:bg-slate-900 text-slate-800 dark:text-slate-200">
-              🏢 Todas las Empresas (Global Super Admin)
+              🏢 All Businesses (Global IT View)
             </option>
             {companies.map((company) => (
               <option
@@ -84,7 +83,7 @@ export function Navbar({
 
         {selectedCompanyId !== 'ALL' && (
           <span className="text-xs font-medium px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
-            Vista Aislada Activa
+            Isolated View Active
           </span>
         )}
       </div>
@@ -96,7 +95,7 @@ export function Navbar({
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
-              placeholder="Buscar por # ticket, solicitante, tema..."
+              placeholder="Search by ticket #, requester, subject..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               className="w-full pl-9 pr-4 py-1.5 text-xs sm:text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all"
@@ -106,7 +105,7 @@ export function Navbar({
 
         <button
           onClick={toggleDarkMode}
-          title={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+          title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
           className="p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 transition-colors cursor-pointer"
         >
           {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}

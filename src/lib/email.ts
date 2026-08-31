@@ -46,7 +46,7 @@ export async function sendNewTicketNotification({
   appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
 }: SendNewTicketAlertParams) {
   if (!adminNotificationEmail) {
-    console.log(`[Email Service] NOTIFICATION_EMAIL o SMTP_USER no configurado. Notificación omitida para ${ticket.ticketNumber}`);
+    console.log(`[Email Service] NOTIFICATION_EMAIL or SMTP_USER not set. Alert email skipped for ${ticket.ticketNumber}`);
     return { success: false, reason: 'No notification email configured' };
   }
 
@@ -81,41 +81,41 @@ export async function sendNewTicketNotification({
           <div class="header">
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <span class="ticket-id">[${ticket.ticketNumber}]</span>
-              <span class="badge priority-badge">Prioridad ${ticket.priority}</span>
+              <span class="badge priority-badge">Priority ${ticket.priority}</span>
             </div>
             <h2 style="margin: 10px 0 0 0; font-size: 18px; color: #ffffff;">${ticket.title}</h2>
           </div>
           
           <div class="content">
             <p style="margin-top: 0; font-size: 14px; color: #475569;">
-              Se ha recibido un nuevo reporte de incidencia técnica a través del portal de IT:
+              A new IT incident report has been submitted via the support portal:
             </p>
 
             <table class="info-table">
               <tr>
-                <td class="label">Empresa (Real Estate):</td>
+                <td class="label">Company (Real Estate):</td>
                 <td><strong>${company.name}</strong> (${company.prefix})</td>
               </tr>
               <tr>
-                <td class="label">Usuario Solicitante:</td>
+                <td class="label">Requester User:</td>
                 <td><strong>${ticket.requesterName}</strong></td>
               </tr>
               <tr>
-                <td class="label">Correo del Solicitante:</td>
+                <td class="label">Requester Email:</td>
                 <td><a href="mailto:${ticket.requesterEmail}">${ticket.requesterEmail}</a></td>
               </tr>
               <tr>
-                <td class="label">Categoría Técnica:</td>
+                <td class="label">Technical Category:</td>
                 <td>${categoryLabel}</td>
               </tr>
               <tr>
-                <td class="label">Estado Inicial:</td>
-                <td><strong style="color: #ea580c;">ABIERTO (Pendiente)</strong></td>
+                <td class="label">Initial Status:</td>
+                <td><strong style="color: #ea580c;">OPEN (Pending)</strong></td>
               </tr>
             </table>
 
             <h4 style="margin: 16px 0 8px 0; font-size: 13px; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px;">
-              Descripción de la Falla Reportada:
+              Reported Issue Description:
             </h4>
             <div class="desc-box">
               ${ticket.description.replace(/\n/g, '<br>')}
@@ -123,13 +123,13 @@ export async function sendNewTicketNotification({
 
             <div class="btn-container">
               <a href="${ticketUrl}" class="btn">
-                Ver y Atender Incidencia en el Panel →
+                View & Manage Incident in Dashboard →
               </a>
             </div>
           </div>
 
           <div class="footer">
-            PropDesk IT Support System • Notificación Automática de Soporte
+            PropDesk IT Support System • Automated Support Dispatch Notification
           </div>
         </div>
       </body>
@@ -137,9 +137,9 @@ export async function sendNewTicketNotification({
   `;
 
   if (!transporter) {
-    console.log(`[Email Service - Simulación] Configura SMTP_HOST, SMTP_USER y SMTP_PASS en las variables de entorno para enviar correos reales.`);
-    console.log(`[Email Service] Destinatario: ${adminNotificationEmail}`);
-    console.log(`[Email Service] Asunto: 🚨 [NUEVA INCIDENCIA - ${ticket.priority}] ${ticket.ticketNumber}: ${ticket.title}`);
+    console.log(`[Email Service - Simulated] Configure SMTP_HOST, SMTP_USER, and SMTP_PASS in environment variables to send live emails.`);
+    console.log(`[Email Service] Recipient: ${adminNotificationEmail}`);
+    console.log(`[Email Service] Subject: 🚨 [NEW INCIDENT - ${ticket.priority}] ${ticket.ticketNumber}: ${ticket.title}`);
     return { success: true, simulated: true };
   }
 
@@ -147,14 +147,14 @@ export async function sendNewTicketNotification({
     const info = await transporter.sendMail({
       from: smtpFrom,
       to: adminNotificationEmail,
-      subject: `🚨 [NUEVA INCIDENCIA - ${ticket.priority}] ${ticket.ticketNumber}: ${ticket.title} (${company.name})`,
+      subject: `🚨 [NEW INCIDENT - ${ticket.priority}] ${ticket.ticketNumber}: ${ticket.title} (${company.name})`,
       html: htmlContent,
     });
 
-    console.log(`[Email Service] Correo de alerta enviado exitosamente. Message ID: ${info.messageId}`);
+    console.log(`[Email Service] Alert email delivered successfully. Message ID: ${info.messageId}`);
     return { success: true, messageId: info.messageId };
   } catch (error: any) {
-    console.error(`[Email Service Error] Fallo al enviar correo de notificación:`, error.message);
+    console.error(`[Email Service Error] Failed to send email alert:`, error.message);
     return { success: false, error: error.message };
   }
 }

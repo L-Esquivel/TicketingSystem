@@ -38,35 +38,35 @@ export function Sidebar({ onOpenCreateTicket }: SidebarProps) {
   const handleLogout = async () => {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
-      toast.success('Sesión cerrada');
+      toast.success('Logged out successfully');
       router.push('/login');
       router.refresh();
     } catch (err) {
-      toast.error('Error al cerrar sesión');
+      toast.error('Error logging out');
     }
   };
 
   const navItems = [
     {
-      name: 'Panel Principal',
+      name: 'Dashboard',
       href: '/',
       icon: LayoutDashboard,
       active: pathname === '/',
     },
     {
-      name: 'Gestión de Incidencias',
+      name: 'Incidents & Tickets',
       href: '/tickets',
       icon: Ticket,
       active: pathname === '/tickets' || pathname.startsWith('/tickets/'),
     },
     {
-      name: 'Empresas & Prefijos',
+      name: 'Companies & Prefixes',
       href: '/companies',
       icon: Building2,
       active: pathname === '/companies',
     },
     {
-      name: 'Portal de Reporte (Cliente)',
+      name: 'Client Submit Portal',
       href: '/submit',
       icon: PlusCircle,
       active: pathname === '/submit',
@@ -85,7 +85,7 @@ export function Sidebar({ onOpenCreateTicket }: SidebarProps) {
             PropDesk IT
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-            Real Estate Support
+            Real Estate IT Support
           </p>
         </div>
       </div>
@@ -98,7 +98,7 @@ export function Sidebar({ onOpenCreateTicket }: SidebarProps) {
             className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium text-sm shadow-sm transition-all hover:shadow hover:shadow-blue-500/25 cursor-pointer"
           >
             <PlusCircle className="w-4 h-4" />
-            Nueva Incidencia
+            New Incident
           </button>
         ) : (
           <Link
@@ -106,7 +106,7 @@ export function Sidebar({ onOpenCreateTicket }: SidebarProps) {
             className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium text-sm shadow-sm transition-all hover:shadow hover:shadow-blue-500/25"
           >
             <PlusCircle className="w-4 h-4" />
-            Nueva Incidencia
+            New Incident
           </Link>
         )}
       </div>
@@ -114,7 +114,7 @@ export function Sidebar({ onOpenCreateTicket }: SidebarProps) {
       {/* Navigation Links */}
       <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
         <div className="px-3 py-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-          Menú de Navegación
+          Navigation
         </div>
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -152,14 +152,14 @@ export function Sidebar({ onOpenCreateTicket }: SidebarProps) {
               {currentUser?.name || 'Luis Esquivel'}
             </p>
             <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
-              {currentUser?.role === 'SUPER_ADMIN' ? 'Super Admin IT' : 'Executive'}
+              {currentUser?.role === 'SUPER_ADMIN' ? 'Super Admin IT Lead' : 'Executive Director'}
             </p>
           </div>
         </div>
 
         <button
           onClick={handleLogout}
-          title="Cerrar sesión"
+          title="Log out"
           className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors cursor-pointer"
         >
           <LogOut className="w-4 h-4" />

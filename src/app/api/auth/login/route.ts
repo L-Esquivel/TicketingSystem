@@ -10,7 +10,7 @@ export async function POST(request: Request) {
 
     if (!email || !password) {
       return NextResponse.json(
-        { success: false, error: 'Por favor ingresa email y contraseña' },
+        { success: false, error: 'Please provide both email and password' },
         { status: 400 }
       );
     }
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
 
     if (!user) {
       return NextResponse.json(
-        { success: false, error: 'Credenciales inválidas (usuario no encontrado)' },
+        { success: false, error: 'Invalid credentials (user not found)' },
         { status: 401 }
       );
     }
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
       return NextResponse.json(
-        { success: false, error: 'Contraseña incorrecta' },
+        { success: false, error: 'Incorrect password' },
         { status: 401 }
       );
     }
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
 
     const response = NextResponse.json({
       success: true,
-      message: `¡Bienvenido de nuevo, ${user.name}!`,
+      message: `Welcome back, ${user.name}!`,
       data: sessionUser,
     });
 
@@ -89,7 +89,7 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error('Login error:', error);
     return NextResponse.json(
-      { success: false, error: error.message || 'Error durante el inicio de sesión' },
+      { success: false, error: error.message || 'Error during login' },
       { status: 500 }
     );
   }

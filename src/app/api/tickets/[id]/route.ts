@@ -26,7 +26,7 @@ export async function GET(request: Request, { params }: Params) {
 
     if (!ticket) {
       return NextResponse.json(
-        { success: false, error: 'Ticket no encontrado' },
+        { success: false, error: 'Ticket not found' },
         { status: 404 }
       );
     }
@@ -34,7 +34,7 @@ export async function GET(request: Request, { params }: Params) {
     return NextResponse.json({ success: true, data: ticket });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: 'Error al consultar ticket' },
+      { success: false, error: 'Failed to fetch ticket' },
       { status: 500 }
     );
   }
@@ -53,7 +53,7 @@ export async function PATCH(request: Request, { params }: Params) {
 
     if (!currentTicket) {
       return NextResponse.json(
-        { success: false, error: 'Ticket no encontrado' },
+        { success: false, error: 'Ticket not found' },
         { status: 404 }
       );
     }
@@ -66,7 +66,7 @@ export async function PATCH(request: Request, { params }: Params) {
       historyEntries.push({
         action: 'STATUS_CHANGED',
         actor: currentActor,
-        details: `Estado actualizado de ${currentTicket.status} a ${status}`,
+        details: `Status changed from ${currentTicket.status} to ${status}`,
       });
     }
 
@@ -74,7 +74,7 @@ export async function PATCH(request: Request, { params }: Params) {
       historyEntries.push({
         action: 'PRIORITY_CHANGED',
         actor: currentActor,
-        details: `Nivel de prioridad modificado de ${currentTicket.priority} a ${priority}`,
+        details: `Priority changed from ${currentTicket.priority} to ${priority}`,
       });
     }
 
@@ -82,7 +82,7 @@ export async function PATCH(request: Request, { params }: Params) {
       historyEntries.push({
         action: 'ASSIGNED',
         actor: currentActor,
-        details: `Reasignado a ${assignedTo}`,
+        details: `Reassigned to ${assignedTo}`,
       });
     }
 
@@ -90,7 +90,7 @@ export async function PATCH(request: Request, { params }: Params) {
       historyEntries.push({
         action: 'RESOLUTION_UPDATED',
         actor: currentActor,
-        details: `Notas de resolución agregadas/modificadas`,
+        details: `Resolution notes updated`,
       });
     }
 
@@ -98,7 +98,7 @@ export async function PATCH(request: Request, { params }: Params) {
       historyEntries.push({
         action: 'NOTE_ADDED',
         actor: currentActor,
-        details: `Nota interna de IT registrada`,
+        details: `Internal IT note logged`,
       });
     }
 
@@ -142,7 +142,7 @@ export async function PATCH(request: Request, { params }: Params) {
   } catch (error: any) {
     console.error('Error updating ticket:', error);
     return NextResponse.json(
-      { success: false, error: error.message || 'Error al actualizar ticket' },
+      { success: false, error: error.message || 'Failed to update ticket' },
       { status: 500 }
     );
   }
@@ -154,10 +154,10 @@ export async function DELETE(request: Request, { params }: Params) {
     await prisma.ticket.delete({
       where: { id: params.id },
     });
-    return NextResponse.json({ success: true, message: 'Ticket eliminado correctamente' });
+    return NextResponse.json({ success: true, message: 'Ticket deleted successfully' });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: 'Error al eliminar ticket' },
+      { success: false, error: 'Failed to delete ticket' },
       { status: 500 }
     );
   }

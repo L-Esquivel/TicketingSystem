@@ -12,13 +12,8 @@ import { Ticket, TicketStats, Status } from '../types';
 import {
   Building2,
   PlusCircle,
-  AlertTriangle,
-  History,
   ArrowRight,
-  TrendingUp,
-  ShieldAlert,
   Flame,
-  CheckCircle2,
 } from 'lucide-react';
 import Link from 'next/link';
 import { formatTimeAgo } from '../lib/utils';
@@ -79,11 +74,11 @@ export default function DashboardPage() {
       });
       const data = await res.json();
       if (data.success) {
-        toast.success(`Estado actualizado a ${newStatus}`);
+        toast.success(`Status updated to ${newStatus}`);
         fetchDashboardData();
       }
     } catch (err) {
-      toast.error('Error al actualizar estado');
+      toast.error('Error updating ticket status');
     }
   };
 
@@ -127,13 +122,13 @@ export default function DashboardPage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-blue-900/40 via-indigo-900/30 to-purple-900/20 border border-blue-800/40 p-6 rounded-2xl">
             <div>
               <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">
-                IT Support Central • Real Estate
+                IT Support Central • Real Estate Operations
               </span>
               <h1 className="text-2xl font-bold text-white mt-1">
-                Panel de Control de Incidencias
+                Incident Control & Support Dashboard
               </h1>
               <p className="text-sm text-slate-300 mt-1">
-                Supervisión multi-empresa, control de SLA y numeración correlativa con prefijos personalizados.
+                Multi-tenant oversight, SLA tracking, and atomic ticket sequence numbering across all brokerages.
               </p>
             </div>
 
@@ -143,14 +138,14 @@ export default function DashboardPage() {
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold shadow-sm transition-all cursor-pointer"
               >
                 <Building2 className="w-4 h-4 text-blue-400" />
-                Nueva Empresa
+                Add Business
               </button>
               <button
                 onClick={() => setIsCreateTicketOpen(true)}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-md shadow-blue-500/20 transition-all cursor-pointer"
               >
                 <PlusCircle className="w-4 h-4" />
-                Registrar Incidencia
+                New Incident
               </button>
             </div>
           </div>
@@ -164,13 +159,13 @@ export default function DashboardPage() {
               <div className="flex items-center justify-between">
                 <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-2">
                   <Building2 className="w-4 h-4 text-blue-500" />
-                  Negocios de Real Estate & Prefijos Configurados
+                  Managed Real Estate Businesses & Prefixes
                 </h2>
                 <Link
                   href="/companies"
                   className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
                 >
-                  Gestionar Empresas <ArrowRight className="w-3.5 h-3.5" />
+                  Manage Businesses <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
 
@@ -187,11 +182,11 @@ export default function DashboardPage() {
                       </span>
                       {c.openCount > 0 ? (
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300">
-                          {c.openCount} pendientes
+                          {c.openCount} pending
                         </span>
                       ) : (
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300">
-                          Al día
+                          Up to date
                         </span>
                       )}
                     </div>
@@ -199,7 +194,7 @@ export default function DashboardPage() {
                       {c.companyName}
                     </h3>
                     <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                      Total histórico: <strong className="text-slate-700 dark:text-slate-200">{c.count}</strong> tickets
+                      Total historical: <strong className="text-slate-700 dark:text-slate-200">{c.count}</strong> tickets
                     </p>
                   </div>
                 ))}
@@ -214,11 +209,11 @@ export default function DashboardPage() {
                 <div className="flex items-center gap-2 text-rose-700 dark:text-rose-400">
                   <Flame className="w-5 h-5 animate-pulse" />
                   <h3 className="font-bold text-sm">
-                    Incidencias Críticas y de Alta Prioridad Activas ({criticalTickets.length})
+                    Critical & High Priority Active Incidents ({criticalTickets.length})
                   </h3>
                 </div>
                 <span className="text-xs text-rose-600 dark:text-rose-400 font-medium">
-                  Atención requerida
+                  Immediate attention required
                 </span>
               </div>
 
@@ -250,7 +245,7 @@ export default function DashboardPage() {
                       {ticket.title}
                     </p>
                     <div className="flex items-center justify-between mt-2 text-[11px] text-slate-500">
-                      <span>Reportado por: <strong>{ticket.requesterName}</strong></span>
+                      <span>Reported by: <strong>{ticket.requesterName}</strong></span>
                       <span>{formatTimeAgo(ticket.createdAt)}</span>
                     </div>
                   </div>
@@ -263,7 +258,7 @@ export default function DashboardPage() {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-2">
-                Tabla de Incidencias
+                All Support Tickets
               </h2>
             </div>
 

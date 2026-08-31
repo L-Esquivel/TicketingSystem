@@ -8,8 +8,6 @@ import {
   PlayCircle,
   Flame,
   CheckCircle2,
-  Building2,
-  TrendingUp,
 } from 'lucide-react';
 
 interface StatsOverviewProps {
@@ -33,7 +31,7 @@ export function StatsOverview({ stats, loading = false }: StatsOverviewProps) {
 
   const cards = [
     {
-      label: 'Total Incidencias',
+      label: 'Total Incidents',
       value: stats.total,
       icon: Ticket,
       color: 'text-slate-600 dark:text-slate-300',
@@ -41,7 +39,7 @@ export function StatsOverview({ stats, loading = false }: StatsOverviewProps) {
       borderColor: 'border-slate-200 dark:border-slate-800',
     },
     {
-      label: 'Abiertas (Pendientes)',
+      label: 'Open (Pending)',
       value: stats.open,
       icon: Clock,
       color: 'text-amber-600 dark:text-amber-400',
@@ -49,7 +47,7 @@ export function StatsOverview({ stats, loading = false }: StatsOverviewProps) {
       borderColor: 'border-amber-200 dark:border-amber-800/60',
     },
     {
-      label: 'En Atención / Progreso',
+      label: 'In Progress / Active',
       value: stats.inProgress + stats.waiting,
       icon: PlayCircle,
       color: 'text-blue-600 dark:text-blue-400',
@@ -57,7 +55,7 @@ export function StatsOverview({ stats, loading = false }: StatsOverviewProps) {
       borderColor: 'border-blue-200 dark:border-blue-800/60',
     },
     {
-      label: 'Críticas / Urgentes',
+      label: 'Critical & Urgent',
       value: stats.critical,
       icon: Flame,
       color: 'text-rose-600 dark:text-rose-400',
@@ -66,7 +64,7 @@ export function StatsOverview({ stats, loading = false }: StatsOverviewProps) {
       alert: stats.critical > 0,
     },
     {
-      label: 'Resueltas & Cerradas',
+      label: 'Resolved & Closed',
       value: stats.resolved + stats.closed,
       icon: CheckCircle2,
       color: 'text-emerald-600 dark:text-emerald-400',
@@ -98,7 +96,7 @@ export function StatsOverview({ stats, loading = false }: StatsOverviewProps) {
               </span>
               {card.alert && (
                 <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-300 animate-pulse">
-                  Requiere Acción
+                  Action Required
                 </span>
               )}
             </div>

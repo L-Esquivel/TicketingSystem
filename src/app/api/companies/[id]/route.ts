@@ -27,7 +27,7 @@ export async function GET(request: Request, { params }: Params) {
 
     if (!company) {
       return NextResponse.json(
-        { success: false, error: 'Empresa no encontrada' },
+        { success: false, error: 'Company not found' },
         { status: 404 }
       );
     }
@@ -35,7 +35,7 @@ export async function GET(request: Request, { params }: Params) {
     return NextResponse.json({ success: true, data: company });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: 'Error al consultar empresa' },
+      { success: false, error: 'Failed to fetch company' },
       { status: 500 }
     );
   }
@@ -50,7 +50,7 @@ export async function PUT(request: Request, { params }: Params) {
     const current = await prisma.company.findUnique({ where: { id: params.id } });
     if (!current) {
       return NextResponse.json(
-        { success: false, error: 'Empresa no encontrada' },
+        { success: false, error: 'Company not found' },
         { status: 404 }
       );
     }
@@ -61,7 +61,7 @@ export async function PUT(request: Request, { params }: Params) {
       const existing = await prisma.company.findUnique({ where: { prefix: cleanPrefix } });
       if (existing && existing.id !== params.id) {
         return NextResponse.json(
-          { success: false, error: `El prefijo "${cleanPrefix}" ya pertenece a otra empresa` },
+          { success: false, error: `Prefix "${cleanPrefix}" is already in use by another company` },
           { status: 409 }
         );
       }
@@ -88,7 +88,7 @@ export async function PUT(request: Request, { params }: Params) {
     return NextResponse.json({ success: true, data: updated });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: error.message || 'Error al actualizar empresa' },
+      { success: false, error: error.message || 'Failed to update company' },
       { status: 500 }
     );
   }
@@ -100,10 +100,10 @@ export async function DELETE(request: Request, { params }: Params) {
     await prisma.company.delete({
       where: { id: params.id },
     });
-    return NextResponse.json({ success: true, message: 'Empresa eliminada correctamente' });
+    return NextResponse.json({ success: true, message: 'Company deleted successfully' });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: 'Error al eliminar empresa' },
+      { success: false, error: 'Failed to delete company' },
       { status: 500 }
     );
   }

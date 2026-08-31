@@ -66,7 +66,7 @@ export async function GET(request: Request) {
   } catch (error: any) {
     console.error('Error listing tickets:', error);
     return NextResponse.json(
-      { success: false, error: 'Error al obtener tickets' },
+      { success: false, error: 'Failed to fetch tickets' },
       { status: 500 }
     );
   }
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Empresa, Nombre del solicitante, Email, Título y Descripción son obligatorios',
+          error: 'Company, Requester Name, Email, Title, and Description are required',
         },
         { status: 400 }
       );
@@ -91,7 +91,7 @@ export async function POST(request: Request) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(requesterEmail)) {
       return NextResponse.json(
-        { success: false, error: 'El correo electrónico proporcionado no es válido' },
+        { success: false, error: 'The provided email address is invalid' },
         { status: 400 }
       );
     }
@@ -120,7 +120,7 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error('Error creating ticket:', error);
     return NextResponse.json(
-      { success: false, error: error.message || 'Error al crear ticket' },
+      { success: false, error: error.message || 'Failed to create ticket' },
       { status: 500 }
     );
   }

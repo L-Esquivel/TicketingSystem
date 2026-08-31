@@ -4,28 +4,29 @@ import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ShieldCheck,
-  Lock,
   Mail,
+  Lock,
   ArrowRight,
-  UserCheck,
   Sparkles,
+  CheckCircle2,
   KeyRound,
+  Building2,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get('redirect') || '/';
+  const redirectPath = searchParams.get('redirect') || '/';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || !password) {
-      toast.error('Ingresa tu correo y contraseña');
+    if (!email || !password) {
+      toast.error('Please enter both email and password');
       return;
     }
 
@@ -39,133 +40,126 @@ function LoginForm() {
 
       const data = await res.json();
       if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Error al iniciar sesión');
+        throw new Error(data.error || 'Invalid credentials');
       }
 
-      toast.success(data.message || 'Inicio de sesión exitoso');
-      router.push(redirect);
+      toast.success(data.message || 'Login successful!');
+      router.push(redirectPath);
       router.refresh();
     } catch (err: any) {
-      toast.error(err.message || 'Credenciales inválidas');
+      toast.error(err.message || 'Error during login');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleQuickLogin = (userEmail: string, userPass: string) => {
-    setEmail(userEmail);
-    setPassword(userPass);
+  const handleQuickFill = (fillEmail: string, fillPass: string) => {
+    setEmail(fillEmail);
+    setPassword(fillPass);
+    toast.info(`Loaded credentials for ${fillEmail}`);
   };
 
   return (
-    <div className="w-full max-w-md relative z-10 space-y-6">
-      {/* Brand Header */}
+    <div className="w-full max-w-md bg-slate-900/80 border border-slate-800 backdrop-blur-xl p-8 rounded-3xl shadow-2xl space-y-6">
+      {/* Brand & Title */}
       <div className="text-center space-y-2">
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white mx-auto shadow-xl shadow-blue-500/20">
-          <ShieldCheck className="w-8 h-8" />
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white mx-auto shadow-lg shadow-blue-500/25">
+          <ShieldCheck className="w-7 h-7" />
         </div>
-        <h1 className="text-2xl font-black text-white tracking-tight">
+        <h1 className="text-2xl font-bold text-white tracking-tight">
           PropDesk IT Support
         </h1>
         <p className="text-xs text-slate-400">
-          Acceso Privado para Administración de Incidencias de Real Estate
+          Private IT Incident Administration for Real Estate Operations
         </p>
       </div>
 
-      {/* Login Card */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl space-y-6">
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1.5">
-              <Mail className="w-3.5 h-3.5 text-slate-400" />
-              Correo Electrónico
-            </label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="luis@propdeskit.com"
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
-            />
-          </div>
+      {/* Login Form */}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1.5">
+            <Mail className="w-3.5 h-3.5 text-slate-400" />
+            Email Address
+          </label>
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="luis@propdeskit.com"
+            className="w-full px-4 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+          />
+        </div>
 
-          <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1.5">
-              <Lock className="w-3.5 h-3.5 text-slate-400" />
-              Contraseña
-            </label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
-            />
-          </div>
+        <div>
+          <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1.5">
+            <Lock className="w-3.5 h-3.5 text-slate-400" />
+            Password
+          </label>
+          <input
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            className="w-full px-4 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm shadow-lg shadow-blue-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+        >
+          {loading ? (
+            <span>Signing in...</span>
+          ) : (
+            <>
+              <KeyRound className="w-4 h-4" />
+              Sign In to Dashboard
+            </>
+          )}
+        </button>
+      </form>
+
+      {/* Quick Credentials Switcher */}
+      <div className="pt-4 border-t border-slate-800/80 space-y-2">
+        <p className="text-[11px] font-semibold text-slate-400 text-center uppercase tracking-wider flex items-center justify-center gap-1">
+          <Sparkles className="w-3 h-3 text-amber-400" />
+          Preconfigured Quick Access
+        </p>
+
+        <div className="grid grid-cols-2 gap-2 text-left">
+          <button
+            type="button"
+            onClick={() => handleQuickFill('luis@propdeskit.com', 'admin123')}
+            className="p-2.5 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 hover:border-blue-500/50 text-xs transition-all text-slate-300 cursor-pointer"
+          >
+            <div className="font-bold text-white flex items-center gap-1">
+              🛠️ Luis (IT Lead)
+            </div>
+            <div className="text-[10px] text-slate-400 font-mono">admin123</div>
+          </button>
 
           <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 px-6 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm shadow-lg shadow-blue-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer mt-2"
+            type="button"
+            onClick={() => handleQuickFill('boss@propdeskit.com', 'boss123')}
+            className="p-2.5 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 hover:border-indigo-500/50 text-xs transition-all text-slate-300 cursor-pointer"
           >
-            {loading ? (
-              <span>Verificando...</span>
-            ) : (
-              <>
-                <KeyRound className="w-4 h-4" />
-                Iniciar Sesión en el Panel
-              </>
-            )}
+            <div className="font-bold text-white flex items-center gap-1">
+              👔 Director (Boss)
+            </div>
+            <div className="text-[10px] text-slate-400 font-mono">boss123</div>
           </button>
-        </form>
-
-        {/* Quick 1-Click Access Buttons */}
-        <div className="pt-4 border-t border-slate-800 space-y-3">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block text-center">
-            ⚡ Accesos Rápidos Preconfigurados
-          </span>
-
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => handleQuickLogin('luis@propdeskit.com', 'admin123')}
-              className="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-left transition-all group cursor-pointer"
-            >
-              <div className="flex items-center gap-1.5 text-blue-400 text-xs font-bold">
-                <UserCheck className="w-3.5 h-3.5" />
-                Luis (IT Lead)
-              </div>
-              <span className="text-[10px] text-slate-400 block mt-0.5 font-mono">
-                admin123
-              </span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleQuickLogin('boss@propdeskit.com', 'boss123')}
-              className="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-left transition-all group cursor-pointer"
-            >
-              <div className="flex items-center gap-1.5 text-purple-400 text-xs font-bold">
-                <UserCheck className="w-3.5 h-3.5" />
-                Jefe (Executive)
-              </div>
-              <span className="text-[10px] text-slate-400 block mt-0.5 font-mono">
-                boss123
-              </span>
-            </button>
-          </div>
         </div>
       </div>
 
-      {/* Public Submit Link */}
-      <div className="text-center">
+      <div className="text-center pt-2">
         <a
           href="/submit"
-          className="text-xs font-medium text-slate-400 hover:text-blue-400 transition-colors inline-flex items-center gap-1"
+          className="text-xs text-slate-400 hover:text-blue-400 transition-colors"
         >
-          ¿Eres un agente o inquilino? Ir al formulario público de reporte <ArrowRight className="w-3 h-3" />
+          Are you a realtor or tenant? Go to public submit portal →
         </a>
       </div>
     </div>
@@ -174,10 +168,8 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center items-center p-4 selection:bg-blue-500 selection:text-white relative overflow-hidden">
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-[300px] h-[300px] bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-      <Suspense fallback={<div className="text-slate-500">Cargando formulario...</div>}>
+    <div className="min-h-screen bg-[#070b14] flex items-center justify-center p-4 selection:bg-blue-500 selection:text-white">
+      <Suspense fallback={<div className="text-slate-400 text-sm">Loading login...</div>}>
         <LoginForm />
       </Suspense>
     </div>

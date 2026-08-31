@@ -19,7 +19,7 @@ export async function GET() {
   } catch (error: any) {
     console.error('Error fetching companies:', error);
     return NextResponse.json(
-      { success: false, error: 'Error al obtener empresas' },
+      { success: false, error: 'Failed to fetch companies' },
       { status: 500 }
     );
   }
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
 
     if (!name || !prefix) {
       return NextResponse.json(
-        { success: false, error: 'El nombre y el prefijo de ticket son obligatorios' },
+        { success: false, error: 'Company name and ticket prefix are required' },
         { status: 400 }
       );
     }
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
 
     if (cleanPrefix.length < 2 || cleanPrefix.length > 10) {
       return NextResponse.json(
-        { success: false, error: 'El prefijo debe tener entre 2 y 10 caracteres alfanuméricos' },
+        { success: false, error: 'Prefix must be between 2 and 10 alphanumeric characters' },
         { status: 400 }
       );
     }
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
 
     if (existing) {
       return NextResponse.json(
-        { success: false, error: `El prefijo "${cleanPrefix}" ya está en uso por la empresa "${existing.name}"` },
+        { success: false, error: `Prefix "${cleanPrefix}" is already in use by "${existing.name}"` },
         { status: 409 }
       );
     }
@@ -81,7 +81,7 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error('Error creating company:', error);
     return NextResponse.json(
-      { success: false, error: error.message || 'Error al registrar empresa' },
+      { success: false, error: error.message || 'Failed to register company' },
       { status: 500 }
     );
   }

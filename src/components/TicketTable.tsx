@@ -4,18 +4,12 @@ import React, { useState } from 'react';
 import { Ticket, Status, Priority } from '../types';
 import { PriorityBadge } from './PriorityBadge';
 import { StatusBadge } from './StatusBadge';
-import { formatTimeAgo, CATEGORY_LABELS } from '../lib/utils';
+import { formatTimeAgo } from '../lib/utils';
 import {
   Download,
   Filter,
   Eye,
-  Building2,
-  User,
-  ArrowUpDown,
-  MoreVertical,
-  CheckCircle2,
   Clock,
-  Sparkles,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -39,19 +33,19 @@ export function TicketTable({
   const [priorityFilter, setPriorityFilter] = useState<string>('ALL');
 
   const tabs = [
-    { id: 'ALL', label: 'Todos', count: tickets.length },
-    { id: 'OPEN', label: 'Abiertos', count: tickets.filter((t) => t.status === 'OPEN').length },
+    { id: 'ALL', label: 'All Incidents', count: tickets.length },
+    { id: 'OPEN', label: 'Open', count: tickets.filter((t) => t.status === 'OPEN').length },
     {
       id: 'IN_PROGRESS',
-      label: 'En Progreso',
+      label: 'In Progress',
       count: tickets.filter((t) => t.status === 'IN_PROGRESS' || t.status === 'WAITING').length,
     },
     {
       id: 'RESOLVED',
-      label: 'Resueltos',
+      label: 'Resolved',
       count: tickets.filter((t) => t.status === 'RESOLVED').length,
     },
-    { id: 'CLOSED', label: 'Cerrados', count: tickets.filter((t) => t.status === 'CLOSED').length },
+    { id: 'CLOSED', label: 'Closed', count: tickets.filter((t) => t.status === 'CLOSED').length },
   ];
 
   // Filter tickets by active tab and priority
@@ -73,23 +67,23 @@ export function TicketTable({
 
   const exportCSV = () => {
     if (filteredTickets.length === 0) {
-      toast.error('No hay tickets para exportar');
+      toast.error('No tickets to export');
       return;
     }
 
     const headers = [
       'Ticket Number',
-      'Empresa',
-      'Prefijo',
-      'Solicitante',
-      'Email',
-      'Categoria',
-      'Prioridad',
-      'Estado',
-      'Titulo',
-      'Descripcion',
-      'Fecha Creacion',
-      'Notas Resolucion',
+      'Company Name',
+      'Prefix',
+      'Requester Name',
+      'Requester Email',
+      'Category',
+      'Priority',
+      'Status',
+      'Incident Title',
+      'Exact Description',
+      'Created At',
+      'Resolution Notes',
     ];
 
     const rows = filteredTickets.map((t) => [
@@ -116,7 +110,7 @@ export function TicketTable({
     link.click();
     document.body.removeChild(link);
 
-    toast.success('Reporte CSV exportado exitosamente');
+    toast.success('CSV report exported successfully');
   };
 
   return (
@@ -161,11 +155,11 @@ export function TicketTable({
               onChange={(e) => setPriorityFilter(e.target.value)}
               className="bg-transparent text-xs font-medium text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer"
             >
-              <option value="ALL">Todas las prioridades</option>
-              <option value="CRITICAL">🔴 Crítica</option>
-              <option value="HIGH">🟠 Alta</option>
-              <option value="MEDIUM">🔵 Media</option>
-              <option value="LOW">🟢 Baja</option>
+              <option value="ALL">All Priorities</option>
+              <option value="CRITICAL">🔴 Critical</option>
+              <option value="HIGH">🟠 High</option>
+              <option value="MEDIUM">🔵 Medium</option>
+              <option value="LOW">🟢 Low</option>
             </select>
           </div>
 
@@ -174,7 +168,7 @@ export function TicketTable({
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-300 text-xs font-medium transition-colors shadow-sm cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Exportar CSV</span>
+            <span className="hidden sm:inline">Export CSV</span>
           </button>
         </div>
       </div>
@@ -184,14 +178,14 @@ export function TicketTable({
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              <th className="py-3 px-4"># Incidencia</th>
-              <th className="py-3 px-4">Empresa (Real Estate)</th>
-              <th className="py-3 px-4">Usuario Solicitante</th>
-              <th className="py-3 px-4">Incidencia / Asunto</th>
-              <th className="py-3 px-4">Prioridad</th>
-              <th className="py-3 px-4">Estado</th>
-              <th className="py-3 px-4 text-right">Antigüedad</th>
-              <th className="py-3 px-4 text-center">Acciones</th>
+              <th className="py-3 px-4"># Incident ID</th>
+              <th className="py-3 px-4">Company (Real Estate)</th>
+              <th className="py-3 px-4">Requester User</th>
+              <th className="py-3 px-4">Incident / Subject</th>
+              <th className="py-3 px-4">Priority</th>
+              <th className="py-3 px-4">Status</th>
+              <th className="py-3 px-4 text-right">Age</th>
+              <th className="py-3 px-4 text-center">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 text-xs">
@@ -208,7 +202,7 @@ export function TicketTable({
                 <td colSpan={8} className="py-12 text-center text-slate-400 dark:text-slate-500">
                   <div className="flex flex-col items-center justify-center gap-2">
                     <Clock className="w-8 h-8 text-slate-300 dark:text-slate-600" />
-                    <p className="font-semibold text-sm">No se encontraron tickets con los filtros aplicados</p>
+                    <p className="font-semibold text-sm">No tickets found matching the selected filters</p>
                   </div>
                 </td>
               </tr>
@@ -280,11 +274,11 @@ export function TicketTable({
                         }
                         className="bg-transparent text-xs font-semibold focus:outline-none cursor-pointer"
                       >
-                        <option value="OPEN">⏳ Abierto</option>
-                        <option value="IN_PROGRESS">🚀 En Progreso</option>
-                        <option value="WAITING">⏸️ En Espera</option>
-                        <option value="RESOLVED">✅ Resuelto</option>
-                        <option value="CLOSED">📁 Cerrado</option>
+                        <option value="OPEN">⏳ Open</option>
+                        <option value="IN_PROGRESS">🚀 In Progress</option>
+                        <option value="WAITING">⏸️ On Hold</option>
+                        <option value="RESOLVED">✅ Resolved</option>
+                        <option value="CLOSED">📁 Closed</option>
                       </select>
                     ) : (
                       <StatusBadge status={ticket.status} />
@@ -304,7 +298,7 @@ export function TicketTable({
                         onSelectTicket(ticket);
                       }}
                       className="p-1.5 rounded-lg text-slate-400 group-hover:text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors cursor-pointer"
-                      title="Ver detalle completo"
+                      title="View full details"
                     >
                       <Eye className="w-4 h-4" />
                     </button>
@@ -318,8 +312,8 @@ export function TicketTable({
 
       {/* Table Footer Summary */}
       <div className="p-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-900/30 text-xs text-slate-500 dark:text-slate-400 flex items-center justify-between">
-        <span>Mostrando {filteredTickets.length} de {tickets.length} incidencias</span>
-        <span className="font-mono text-[11px] text-slate-400">Numeración Atómica Multi-Empresa</span>
+        <span>Showing {filteredTickets.length} of {tickets.length} incidents</span>
+        <span className="font-mono text-[11px] text-slate-400">Atomic Multi-Tenant Counter</span>
       </div>
     </div>
   );

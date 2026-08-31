@@ -55,11 +55,11 @@ export default function TicketsPage() {
       });
       const data = await res.json();
       if (data.success) {
-        toast.success(`Estado de ticket actualizado`);
+        toast.success(`Ticket status updated to ${newStatus}`);
         fetchTickets();
       }
     } catch (err) {
-      toast.error('Error al actualizar estado');
+      toast.error('Error updating ticket status');
     }
   };
 
@@ -82,10 +82,10 @@ export default function TicketsPage() {
             <div>
               <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2.5">
                 <TicketIcon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                Gestión Centralizada de Incidencias
+                Incident & Ticket Management
               </h1>
               <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-                Visualiza, filtra y atiende todos los tickets de soporte con trazabilidad completa.
+                Filter, inspect, resolve, and audit support tickets across all real estate businesses.
               </p>
             </div>
 
@@ -94,7 +94,7 @@ export default function TicketsPage() {
               className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm font-semibold shadow-md shadow-blue-500/20 transition-all cursor-pointer"
             >
               <PlusCircle className="w-4 h-4" />
-              Nueva Incidencia
+              New Incident
             </button>
           </div>
 

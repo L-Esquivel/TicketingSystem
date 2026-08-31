@@ -63,15 +63,15 @@ export function CreateTicketModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!companyId) {
-      toast.error('Selecciona una empresa');
+      toast.error('Please select a company');
       return;
     }
     if (!requesterName.trim() || !requesterEmail.trim()) {
-      toast.error('Completa los datos del usuario solicitante');
+      toast.error('Please provide requester user details');
       return;
     }
     if (!title.trim() || !description.trim()) {
-      toast.error('Describe la incidencia exacta');
+      toast.error('Please describe the exact incident');
       return;
     }
 
@@ -93,11 +93,11 @@ export function CreateTicketModal({
 
       const data = await res.json();
       if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Error al generar la incidencia');
+        throw new Error(data.error || 'Failed to create incident');
       }
 
       toast.success(
-        `¡Incidencia ${data.data.ticketNumber} generada exitosamente para ${selectedCompany?.name}!`,
+        `Incident ${data.data.ticketNumber} generated successfully for ${selectedCompany?.name}!`,
         { duration: 5000 }
       );
       onSuccess(data.data);
@@ -110,7 +110,7 @@ export function CreateTicketModal({
       setRequesterEmail('');
       setPriority('MEDIUM');
     } catch (err: any) {
-      toast.error(err.message || 'Error al guardar el ticket');
+      toast.error(err.message || 'Error saving ticket');
     } finally {
       setLoading(false);
     }
@@ -127,10 +127,10 @@ export function CreateTicketModal({
             </div>
             <div>
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-                Registrar Nueva Incidencia de IT
+                Create New IT Incident Ticket
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Se generará un número de ticket secuencial con el prefijo de la empresa seleccionada
+                A sequential ticket number will be generated with the business prefix
               </p>
             </div>
           </div>
@@ -149,7 +149,7 @@ export function CreateTicketModal({
             <div className="md:col-span-2">
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1 flex items-center gap-1.5">
                 <Building2 className="w-3.5 h-3.5 text-blue-500" />
-                Empresa de Real Estate *
+                Real Estate Business *
               </label>
               <select
                 required
@@ -167,7 +167,7 @@ export function CreateTicketModal({
 
             <div className="flex flex-col justify-center bg-blue-50/80 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 rounded-lg p-2.5">
               <span className="text-[10px] font-semibold text-blue-700 dark:text-blue-300 uppercase tracking-wide flex items-center gap-1">
-                <Sparkles className="w-3 h-3" /> Próximo Número
+                <Sparkles className="w-3 h-3" /> Next Ticket ID
               </span>
               <p className="text-sm font-mono font-bold text-blue-900 dark:text-blue-200 mt-0.5">
                 {selectedCompany
@@ -182,14 +182,14 @@ export function CreateTicketModal({
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1">
                 <User className="w-3.5 h-3.5 text-slate-400" />
-                Usuario que lo generó (Nombre) *
+                Requester Name *
               </label>
               <input
                 type="text"
                 required
                 value={requesterName}
                 onChange={(e) => setRequesterName(e.target.value)}
-                placeholder="Ej. Sarah Jenkins, John Realtor"
+                placeholder="e.g. Sarah Jenkins, John Realtor"
                 className="w-full px-3.5 py-2 text-sm rounded-lg bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 focus:outline-none"
               />
             </div>
@@ -197,7 +197,7 @@ export function CreateTicketModal({
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1">
                 <Mail className="w-3.5 h-3.5 text-slate-400" />
-                Email del Solicitante *
+                Requester Email *
               </label>
               <input
                 type="email"
@@ -215,24 +215,24 @@ export function CreateTicketModal({
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1">
                 <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
-                Nivel de Prioridad *
+                Priority Level *
               </label>
               <select
                 value={priority}
                 onChange={(e) => setPriority(e.target.value as Priority)}
                 className="w-full px-3 py-2 text-sm rounded-lg bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 focus:outline-none"
               >
-                <option value="LOW">🟢 Baja (Consultas, accesos menores)</option>
-                <option value="MEDIUM">🔵 Media (Fallas normales, software)</option>
-                <option value="HIGH">🟠 Alta (Sistemas MLS caídos, correos)</option>
-                <option value="CRITICAL">🔴 Crítica / Urgente (Corte total de red, seguridad)</option>
+                <option value="LOW">🟢 Low (General inquiry, non-urgent)</option>
+                <option value="MEDIUM">🔵 Medium (Single workstation, standard software)</option>
+                <option value="HIGH">🟠 High (MLS down, contracts, email issues)</option>
+                <option value="CRITICAL">🔴 Critical (Total office outage, security threat)</option>
               </select>
             </div>
 
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1">
                 <FolderTree className="w-3.5 h-3.5 text-slate-400" />
-                Categoría de IT
+                IT Category
               </label>
               <select
                 value={category}
@@ -252,14 +252,14 @@ export function CreateTicketModal({
           <div>
             <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1">
               <FileText className="w-3.5 h-3.5 text-slate-400" />
-              Título / Resumen de la Incidencia *
+              Incident Summary / Title *
             </label>
             <input
               type="text"
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Ej. MLS Single Sign-On falla para agentes del equipo comercial"
+              placeholder="e.g. MLS Single Sign-On authentication failure for commercial team"
               className="w-full px-3.5 py-2 text-sm rounded-lg bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 focus:outline-none"
             />
           </div>
@@ -267,14 +267,14 @@ export function CreateTicketModal({
           {/* Detailed Incident Description */}
           <div>
             <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-              Incidencia Exacta (Detalles, pasos para reproducir o mensajes de error) *
+              Exact Incident Description (Details, error codes, steps to reproduce) *
             </label>
             <textarea
               required
               rows={4}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe con precisión qué ocurrió, qué sistemas están afectados y qué error arroja la pantalla..."
+              placeholder="Describe precisely what occurred, which devices or applications are impacted, and any visible error messages..."
               className="w-full px-3.5 py-2.5 text-sm rounded-lg bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 focus:outline-none resize-y"
             />
           </div>
@@ -286,7 +286,7 @@ export function CreateTicketModal({
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
             >
-              Cancelar
+              Cancel
             </button>
             <button
               type="submit"
@@ -294,11 +294,11 @@ export function CreateTicketModal({
               className="flex items-center gap-2 px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm font-medium shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {loading ? (
-                <span>Creando ticket...</span>
+                <span>Creating ticket...</span>
               ) : (
                 <>
                   <CheckCircle2 className="w-4 h-4" />
-                  Generar Ticket de Incidencia
+                  Generate Incident Ticket
                 </>
               )}
             </button>

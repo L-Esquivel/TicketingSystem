@@ -11,7 +11,6 @@ import {
   CheckCircle2,
   ArrowRight,
   Sparkles,
-  LifeBuoy,
   PlusCircle,
 } from 'lucide-react';
 import { Company, Priority, Category } from '../../types';
@@ -50,7 +49,7 @@ export default function SubmitTicketPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!companyId) {
-      toast.error('Por favor selecciona la empresa');
+      toast.error('Please select your business / company');
       return;
     }
 
@@ -72,13 +71,13 @@ export default function SubmitTicketPage() {
 
       const data = await res.json();
       if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Error al registrar la incidencia');
+        throw new Error(data.error || 'Error submitting support ticket');
       }
 
       setSubmittedTicket(data.data);
-      toast.success(`Incidencia ${data.data.ticketNumber} registrada exitosamente`);
+      toast.success(`Incident ${data.data.ticketNumber} submitted successfully!`);
     } catch (err: any) {
-      toast.error(err.message || 'Ocurrió un error al enviar el reporte');
+      toast.error(err.message || 'An error occurred while submitting your ticket');
     } finally {
       setLoading(false);
     }
@@ -106,16 +105,16 @@ export default function SubmitTicketPage() {
               PropDesk IT Support Portal
             </h1>
             <p className="text-xs text-slate-400">
-              Mesa de Ayuda de IT para Empresas de Real Estate
+              IT Help Desk & Operations for Real Estate Brokerages & Property Management
             </p>
           </div>
         </div>
 
         <Link
-          href="/"
+          href="/login"
           className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
         >
-          Acceso Administrador IT →
+          IT Admin Login →
         </Link>
       </header>
 
@@ -130,10 +129,10 @@ export default function SubmitTicketPage() {
 
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
-                ¡Incidencia Registrada Exitosamente!
+                Ticket Created Successfully!
               </span>
               <h2 className="text-3xl font-black text-white mt-1">
-                Número de Ticket:
+                Your Incident ID:
               </h2>
               <div className="mt-4 inline-block px-6 py-3 rounded-2xl bg-blue-600/30 border border-blue-500/50 text-blue-300 font-mono text-2xl font-black tracking-wider shadow-inner">
                 {submittedTicket.ticketNumber}
@@ -142,40 +141,40 @@ export default function SubmitTicketPage() {
 
             <div className="max-w-md mx-auto p-4 rounded-xl bg-slate-900/70 border border-slate-700/60 text-xs text-slate-300 space-y-2 text-left">
               <div className="flex justify-between">
-                <span className="text-slate-500">Empresa:</span>
+                <span className="text-slate-500">Company:</span>
                 <strong className="text-white">{selectedCompany?.name}</strong>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Solicitante:</span>
+                <span className="text-slate-500">Requester:</span>
                 <span className="text-white">{submittedTicket.requesterName} ({submittedTicket.requesterEmail})</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Prioridad:</span>
+                <span className="text-slate-500">Priority:</span>
                 <span className="font-bold text-amber-400">{submittedTicket.priority}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Estado Inicial:</span>
+                <span className="text-slate-500">Initial Status:</span>
                 <span className="text-blue-400 font-semibold">{submittedTicket.status}</span>
               </div>
             </div>
 
             <p className="text-xs text-slate-400 max-w-md mx-auto">
-              El equipo de soporte de IT ha recibido tu solicitud y se pondrá en contacto a través de tu correo electrónico.
+              Our IT Support team has received your ticket and will follow up with you directly via email.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
               <button
                 onClick={handleReset}
-                className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <PlusCircle className="w-4 h-4" />
-                Reportar Otra Incidencia
+                Submit Another Incident
               </button>
               <Link
-                href="/"
+                href="/login"
                 className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20"
               >
-                Ver en Panel de Soporte <ArrowRight className="w-4 h-4" />
+                IT Admin Portal <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
@@ -184,13 +183,13 @@ export default function SubmitTicketPage() {
           <div className="bg-slate-800/80 border border-slate-700/80 rounded-3xl p-6 sm:p-10 shadow-2xl backdrop-blur-xl">
             <div className="mb-6">
               <span className="text-xs font-bold uppercase tracking-wider text-blue-400">
-                Formulario de Incidencias de Soporte
+                IT Support Request Form
               </span>
               <h2 className="text-2xl font-bold text-white mt-1">
-                ¿Qué problema de IT estás experimentando?
+                What technical issue are you experiencing?
               </h2>
               <p className="text-xs sm:text-sm text-slate-400 mt-1">
-                Completa los datos a continuación para que nuestro equipo técnico atienda tu incidencia inmediatamente.
+                Fill out the details below and our IT support lead will address your issue promptly.
               </p>
             </div>
 
@@ -199,7 +198,7 @@ export default function SubmitTicketPage() {
               <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-700/80">
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center gap-1.5">
                   <Building2 className="w-4 h-4 text-blue-400" />
-                  Selecciona tu Empresa de Real Estate *
+                  Select Your Real Estate Business *
                 </label>
                 <select
                   required
@@ -216,7 +215,7 @@ export default function SubmitTicketPage() {
                 {selectedCompany && (
                   <p className="text-[11px] text-blue-400 mt-1.5 flex items-center gap-1">
                     <Sparkles className="w-3 h-3" />
-                    Prefijo asignado: <strong>{selectedCompany.prefix}</strong> (Generará {selectedCompany.prefix}-XXXX)
+                    Assigned prefix: <strong>{selectedCompany.prefix}</strong> (Generates {selectedCompany.prefix}-XXXX)
                   </p>
                 )}
               </div>
@@ -226,14 +225,14 @@ export default function SubmitTicketPage() {
                 <div>
                   <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1">
                     <User className="w-3.5 h-3.5 text-slate-400" />
-                    Tu Nombre y Apellido *
+                    Your Full Name *
                   </label>
                   <input
                     type="text"
                     required
                     value={requesterName}
                     onChange={(e) => setRequesterName(e.target.value)}
-                    placeholder="Ej. Sarah Jenkins"
+                    placeholder="e.g. Sarah Jenkins"
                     className="w-full px-4 py-2.5 rounded-xl bg-slate-900/70 border border-slate-700 text-white placeholder-slate-500 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   />
                 </div>
@@ -241,14 +240,14 @@ export default function SubmitTicketPage() {
                 <div>
                   <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1">
                     <Mail className="w-3.5 h-3.5 text-slate-400" />
-                    Tu Correo Electrónico *
+                    Your Business Email *
                   </label>
                   <input
                     type="email"
                     required
                     value={requesterEmail}
                     onChange={(e) => setRequesterEmail(e.target.value)}
-                    placeholder="tu.email@inmobiliaria.com"
+                    placeholder="name@brokerage.com"
                     className="w-full px-4 py-2.5 rounded-xl bg-slate-900/70 border border-slate-700 text-white placeholder-slate-500 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   />
                 </div>
@@ -259,23 +258,23 @@ export default function SubmitTicketPage() {
                 <div>
                   <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1">
                     <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
-                    Nivel de Urgencia / Prioridad *
+                    Urgency / Priority Level *
                   </label>
                   <select
                     value={priority}
                     onChange={(e) => setPriority(e.target.value as Priority)}
                     className="w-full px-4 py-2.5 rounded-xl bg-slate-900/70 border border-slate-700 text-white text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none cursor-pointer"
                   >
-                    <option value="LOW">🟢 Baja - Duda o solicitud menor</option>
-                    <option value="MEDIUM">🔵 Media - Falla en app o equipo individual</option>
-                    <option value="HIGH">🟠 Alta - Caída de MLS, correo o contrato</option>
-                    <option value="CRITICAL">🔴 Crítica - Corte total de oficina o seguridad</option>
+                    <option value="LOW">🟢 Low - Minor question or inquiry</option>
+                    <option value="MEDIUM">🔵 Medium - Single application or workstation glitch</option>
+                    <option value="HIGH">🟠 High - MLS outage, email down, contract issue</option>
+                    <option value="CRITICAL">🔴 Critical - Entire office offline or security threat</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                    Categoría del Problema
+                    Technical Category
                   </label>
                   <select
                     value={category}
@@ -295,14 +294,14 @@ export default function SubmitTicketPage() {
               <div>
                 <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1">
                   <FileText className="w-3.5 h-3.5 text-slate-400" />
-                  Asunto / Título de la Falla *
+                  Issue Subject / Title *
                 </label>
                 <input
                   type="text"
                   required
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Ej. No puedo ingresar al portal MLS o el equipo no detecta la red"
+                  placeholder="e.g. Cannot log into MLS portal or printer unreachable"
                   className="w-full px-4 py-2.5 rounded-xl bg-slate-900/70 border border-slate-700 text-white placeholder-slate-500 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
               </div>
@@ -310,14 +309,14 @@ export default function SubmitTicketPage() {
               {/* Detailed Description */}
               <div>
                 <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                  Descripción Exacta de la Incidencia *
+                  Exact Incident Description *
                 </label>
                 <textarea
                   required
                   rows={4}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Por favor describe detalladamente qué ocurrió, qué aplicación o equipo está fallando y cualquier mensaje de error que aparezca..."
+                  placeholder="Please describe what happened, what application or device is failing, and include any error messages..."
                   className="w-full px-4 py-3 rounded-xl bg-slate-900/70 border border-slate-700 text-white placeholder-slate-500 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none resize-y"
                 />
               </div>
@@ -329,11 +328,11 @@ export default function SubmitTicketPage() {
                 className="w-full py-3.5 px-6 rounded-2xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm shadow-xl shadow-blue-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
               >
                 {loading ? (
-                  <span>Enviando reporte...</span>
+                  <span>Submitting incident...</span>
                 ) : (
                   <>
                     <CheckCircle2 className="w-5 h-5" />
-                    Enviar Incidencia al Soporte de IT
+                    Submit Ticket to IT Support
                   </>
                 )}
               </button>

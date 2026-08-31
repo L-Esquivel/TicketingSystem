@@ -10,16 +10,13 @@ import { Company } from '../../types';
 import {
   Building2,
   PlusCircle,
-  Hash,
   Mail,
   Phone,
   MapPin,
-  Ticket,
   ArrowRight,
   Sparkles,
   Edit2,
   Trash2,
-  AlertTriangle,
 } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
@@ -55,8 +52,8 @@ export default function CompaniesPage() {
   const handleDeleteCompany = async (company: Company) => {
     const ticketCount = company._count?.tickets ?? 0;
     const msg = ticketCount > 0
-      ? `¿Estás seguro de eliminar la empresa "${company.name}"? Esta acción eliminará también sus ${ticketCount} incidencias asociadas.`
-      : `¿Estás seguro de eliminar la empresa "${company.name}"?`;
+      ? `Are you sure you want to delete "${company.name}"? This will also permanently delete its ${ticketCount} associated support tickets.`
+      : `Are you sure you want to delete "${company.name}"?`;
 
     if (!confirm(msg)) return;
 
@@ -64,13 +61,13 @@ export default function CompaniesPage() {
       const res = await fetch(`/api/companies/${company.id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
-        toast.success(`Empresa ${company.name} eliminada exitosamente`);
+        toast.success(`Business ${company.name} deleted successfully`);
         fetchCompanies();
       } else {
-        throw new Error(data.error || 'Error al eliminar');
+        throw new Error(data.error || 'Failed to delete company');
       }
     } catch (err: any) {
-      toast.error(err.message || 'Error al eliminar empresa');
+      toast.error(err.message || 'Error deleting business');
     }
   };
 
@@ -87,10 +84,10 @@ export default function CompaniesPage() {
             <div>
               <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2.5">
                 <Building2 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                Gestión de Empresas & Prefijos de Incidencias
+                Real Estate Companies & Ticket Prefixes
               </h1>
               <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-                Registra, edita o elimina negocios de Real Estate y configura su código correlativo de tickets.
+                Register, edit, or remove client businesses and configure their customized incident ID numbering codes.
               </p>
             </div>
 
@@ -99,7 +96,7 @@ export default function CompaniesPage() {
               className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm font-semibold shadow-md shadow-blue-500/20 transition-all cursor-pointer"
             >
               <PlusCircle className="w-4 h-4" />
-              Nueva Empresa
+              Add Business
             </button>
           </div>
 
@@ -115,13 +112,13 @@ export default function CompaniesPage() {
             ) : companies.length === 0 ? (
               <div className="col-span-2 py-16 text-center text-slate-500 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
                 <Building2 className="w-12 h-12 mx-auto text-slate-400 mb-3" />
-                <p className="font-semibold text-slate-700 dark:text-slate-300">No hay empresas registradas actualmente.</p>
-                <p className="text-xs text-slate-400 mt-1">Puedes agregar los negocios reales de tu cliente haciendo clic en el botón.</p>
+                <p className="font-semibold text-slate-700 dark:text-slate-300">No companies registered yet.</p>
+                <p className="text-xs text-slate-400 mt-1">You can add your client&apos;s real estate businesses by clicking the button below.</p>
                 <button
                   onClick={() => setIsCreateCompanyOpen(true)}
                   className="mt-4 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-500/20"
                 >
-                  Registrar Nueva Empresa
+                  Register New Business
                 </button>
               </div>
             ) : (
@@ -139,7 +136,7 @@ export default function CompaniesPage() {
                             {company.prefix}
                           </span>
                           <span className="text-[11px] text-slate-400">
-                            Tickets emitidos: #{company.ticketCounter}
+                            Issued tickets: #{company.ticketCounter}
                           </span>
                         </div>
                         <h2 className="text-lg font-bold text-slate-900 dark:text-white mt-2">
@@ -154,15 +151,15 @@ export default function CompaniesPage() {
                             setSelectedCompanyToEdit(company);
                             setIsEditCompanyOpen(true);
                           }}
-                          title="Editar empresa"
-                          className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                          title="Edit business"
+                          className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
                         >
                           <Edit2 className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDeleteCompany(company)}
-                          title="Eliminar empresa"
-                          className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors"
+                          title="Delete business"
+                          className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors cursor-pointer"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -173,7 +170,7 @@ export default function CompaniesPage() {
                     <div className="mt-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 flex items-center justify-between">
                       <span className="text-xs font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                         <Sparkles className="w-3.5 h-3.5 text-blue-500" />
-                        Próximo ID correlativo:
+                        Next sequential ID:
                       </span>
                       <span className="font-mono font-bold text-xs text-blue-600 dark:text-blue-400 bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
                         {company.prefix}-{(company.ticketCounter + 1).toString().padStart(4, '0')}
@@ -184,7 +181,7 @@ export default function CompaniesPage() {
                     <div className="mt-4 space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
                       {company.contactName && (
                         <p className="flex items-center gap-2">
-                          <strong className="text-slate-400 font-medium">Contacto:</strong> {company.contactName}
+                          <strong className="text-slate-400 font-medium">Contact:</strong> {company.contactName}
                         </p>
                       )}
                       {company.contactEmail && (
@@ -218,14 +215,14 @@ export default function CompaniesPage() {
                       className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
                     >
                       <PlusCircle className="w-3.5 h-3.5" />
-                      Registrar Incidencia
+                      Create Incident
                     </button>
 
                     <Link
                       href={`/tickets?companyId=${company.id}`}
                       className="flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors"
                     >
-                      Ver Tickets ({company._count?.tickets ?? 0}) <ArrowRight className="w-3.5 h-3.5" />
+                      View Tickets ({company._count?.tickets ?? 0}) <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
                 </div>
