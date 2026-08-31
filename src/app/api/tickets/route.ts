@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../lib/prisma';
 import { createTicket } from '../../../lib/tickets';
+import { sendNewTicketNotification } from '../../../lib/email';
 
 export const dynamic = 'force-dynamic';
 
@@ -71,7 +72,7 @@ export async function GET(request: Request) {
   }
 }
 
-// POST /api/tickets - Create a new ticket with automatic sequence generation
+// POST /api/tickets - Create a new ticket with automatic sequence generation and email notification
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -104,6 +105,16 @@ export async function POST(request: Request) {
       description,
       priority: priority || 'MEDIUM',
     });
+
+    // Send email alert to IT Lead / Admin in background
+    if (ticket.company) {
+      sendNewTicketNotification({
+        ticket,
+        company: ticket.company,
+      }).catch((emailErr) => {
+        console.error('Failed to trigger email notification:', emailErr);
+      });
+    }
 
     return NextResponse.json({ success: true, data: ticket }, { status: 201 });
   } catch (error: any) {
