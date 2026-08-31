@@ -181,5 +181,18 @@ SMTP_FROM="\"PropDesk IT Alerts\" <your-email@gmail.com>"
 
 ---
 
+## ⚠️ Known Limitations & Architectural Notes
+
+1. **In-Memory Rate Limiting**:
+   - The platform uses an in-memory sliding window rate limiter (`src/lib/rateLimit.ts`).
+   - Rate limit state resets whenever the web service restarts or redeploys.
+   - *Scalability Recommendation*: If horizontally scaling to multiple server replicas behind a load balancer, migrate the rate store to a shared Redis cluster (e.g., `@upstash/ratelimit`).
+
+2. **Proxy Header Resolution (`X-Forwarded-For`)**:
+   - `getClientIp()` resolves the rightmost IP in the `X-Forwarded-For` chain appended by the Render edge proxy to prevent client-side IP spoofing.
+   - *Network Topology Note*: If adding a secondary CDN layer (such as Cloudflare) in front of Render, update header parsing to evaluate the trusted CDN header (`cf-connecting-ip`).
+
+---
+
 ## 📄 License
-This project is proprietary and maintained for Luis Esquivel.
+This project is proprietary and maintained for Real Estate IT Operations.

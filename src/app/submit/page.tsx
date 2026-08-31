@@ -27,6 +27,7 @@ export default function SubmitTicketPage() {
   const [priority, setPriority] = useState<Priority>('MEDIUM');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [honeypot, setHoneypot] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Success state
@@ -66,6 +67,7 @@ export default function SubmitTicketPage() {
           priority,
           title,
           description,
+          website_url: honeypot, // Anti-bot honeypot field
         }),
       });
 
@@ -194,6 +196,18 @@ export default function SubmitTicketPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Anti-bot Honeypot Field (Invisible to users & hidden from screen readers) */}
+              <input
+                type="text"
+                name="website_url"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                className="opacity-0 absolute left-[-9999px] pointer-events-none h-0 w-0 z-[-1]"
+              />
+
               {/* Company Selection */}
               <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-700/80">
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center gap-1.5">
