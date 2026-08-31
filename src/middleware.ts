@@ -11,8 +11,7 @@ export async function middleware(request: NextRequest) {
   // Exclude static assets and public routes
   if (
     pathname.startsWith('/_next') ||
-    pathname.startsWith('/api/auth/login') ||
-    pathname.startsWith('/api/auth/logout') ||
+    pathname.startsWith('/api/auth') ||
     pathname.startsWith('/api/seed') ||
     pathname.startsWith('/api/tickets') || // Allow clients to POST tickets from /submit
     pathname.startsWith('/api/companies') || // Allow public dropdown in /submit
