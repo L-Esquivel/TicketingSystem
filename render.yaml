@@ -1,14 +1,5 @@
 # Render Blueprint for Multi-Tenant IT Ticketing System
-# Automates creation of both PostgreSQL Database and Next.js Web Service
-
-version: "1"
-
-databases:
-  - name: ticketing-postgres-db
-    databaseName: ticketing_db
-    user: ticketing_user
-    plan: free # or starter ($7/mo with persistence)
-    region: oregon
+# Web Service connected to Neon PostgreSQL Database
 
 services:
   - type: web
@@ -21,9 +12,9 @@ services:
     startCommand: npm start
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: ticketing-postgres-db
-          property: connectionString
+        sync: false
+      - key: DATABASE_URL_UNPOOLED
+        sync: false
       - key: NODE_ENV
         value: production
       - key: NEXT_PUBLIC_APP_NAME
