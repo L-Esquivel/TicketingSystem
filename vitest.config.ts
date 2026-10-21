@@ -7,6 +7,7 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./tests/setup.ts'],
     fileParallelism: false, // Run test files sequentially to prevent database cleanup race conditions
+    testTimeout: 30000,
     alias: {
       '@': path.resolve(__dirname, './src'),
     },

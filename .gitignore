@@ -33,3 +33,4 @@ next-env.d.ts
 # prisma sqlite file
 prisma/*.db
 prisma/*.db-journal
+.neon
